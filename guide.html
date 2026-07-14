@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>上手教程 — KuAi V1.0</title>
+<meta name="description" content="5 分钟快速上手：安装配置、配置大模型 API、管理第一条提示词、生成视频提示词、制作智能分镜的完整保姆级步骤。">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <span class="logo">K</span>
+      <span>KuAi<small>V1.0</small></span>
+    </a>
+    <button class="nav-toggle">☰</button>
+    <div class="nav-links">
+      <a href="index.html">下载</a>
+      <a href="features.html">功能介绍</a>
+      <a href="guide.html" class="active">上手教程</a>
+      <a href="index.html#faq">常见问题</a>
+      <a href="index.html#download" class="nav-cta">立即下载</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" style="padding:70px 0 58px;">
+  <div class="hero-inner">
+    <span class="badge"><span class="dot"></span> 保姆级 · 5 分钟上手</span>
+    <h1>从安装到<span class="grad">第一个分镜</span></h1>
+    <p class="lead">跟着做，几步就能把零散提示词管起来、把文案变成视频脚本。</p>
+  </div>
+</header>
+
+<section style="padding-top:54px;">
+  <div class="wrap">
+    <div class="section-head" style="text-align:left;margin-left:0;max-width:none;">
+      <span class="eyebrow">快速上手</span>
+      <h2>五个步骤跑通核心流程</h2>
+    </div>
+
+    <div class="guide-step"><div class="n">1</div><div>
+      <h3>下载并安装</h3>
+      <p>从<a href="index.html#download">下载页</a>获取 V1.0 安装包（<code>downloads/kuai-v1.0-setup.exe</code>），双击按向导安装。首次打开会创建本机数据文件 <code>软件配置数据(请勿删除).json</code>。</p>
+    </div></div>
+
+    <div class="guide-step"><div class="n">2</div><div>
+      <h3>配置一个大模型（可选但推荐）</h3>
+      <p>点主界面 🌐 或菜单「工具 → 翻译/润色引擎设置」，选一个引擎（如 DeepSeek / 通义千问）并填入 Key 与模型名。想完全离线，选 <b>Ollama</b> 本地模型即可免 Key。配置后点「测试」确认连通。</p>
+    </div></div>
+
+    <div class="guide-step"><div class="n">3</div><div>
+      <h3>建第一条提示词</h3>
+      <p>导航到「工作台」→ 点「新建分组」建立分类（如"电商主图"）→ 点「新建卡片」添加提示词。<b>双击卡片</b>打开编辑器，上下两栏分别写中文 / 英文；需要翻译时点 <b>⇄</b>，需要润色时点 <b>✨</b>。</p>
+    </div></div>
+
+    <div class="guide-step"><div class="n">4</div><div>
+      <h3>生成视频提示词</h3>
+      <p>导航到「视频提示词」，左侧选画幅（如 9:16）、密度、模型适配，右侧粘贴文案点「生成」。稍候即可得到可直接贴到即梦 / 可灵 / Seedance 的镜头提示词，点「导出 .docx」留存。</p>
+    </div></div>
+
+    <div class="guide-step"><div class="n">5</div><div>
+      <h3>做一份智能分镜</h3>
+      <p>导航到「智能分镜」，输入创意点「一键生成」。系统会提取角色 / 场景并生成分镜表；上传角色 / 场景参考图锁定一致性，编辑每镜内容后导出 <code>.xlsx</code> 交给制作或拍摄。</p>
+    </div></div>
+  </div>
+</section>
+
+<!-- 场景教程 -->
+<section style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">常见场景</span>
+      <h2>按你想做的事，对号入座</h2>
+    </div>
+    <div class="grid grid-2">
+      <div class="card"><div class="ico">📚</div><h3>只想安静收集提示词</h3><p>纯本地可用。用工作台建分组、加卡片、打标签；视觉灵感库批量导入参考图并 AI 反推提示词。无需任何 API 配置。</p></div>
+      <div class="card"><div class="ico">🌐</div><h3>要把中文提示词翻成英文</h3><p>编辑器里打开卡片，点 <b>⇄ 翻译</b>，一键中英互译；也可先 <b>🔮 识别变量</b> 把可变内容参数化，再翻译，批量复用更方便。</p></div>
+      <div class="card"><div class="ico">🎬</div><h3>要拍一条短视频</h3><p>「视频提示词」把文案拆成镜头脚本 → 「智能分镜」生成带景别 / 运镜 / 台词的可编辑分镜表 → 导出 xlsx 直接用于拍摄或喂给 AI 视频工具。</p></div>
+      <div class="card"><div class="ico">🛡️</div><h3>怕软件崩、怕丢稿</h3><p>默认每 2 分钟自动保存 + 50 个历史快照可回退；万一异常退出，下次启动会提示从崩溃前备份恢复。重要项目记得用「导出配置」做备份。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ 延伸 -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">排障小贴士</span>
+      <h2>上手时容易卡住的地方</h2>
+    </div>
+    <div class="faq-item"><h4>点生成没反应 / 报错？</h4><p>多半是 API 没配或 Key 无效。去「工具 → 翻译/润色引擎设置」确认引擎、URL、Key、模型名都填对，并用「测试 / 连通性检测」验证。</p></div>
+    <div class="faq-item"><h4>翻译按钮是灰的？</h4><p>翻译依赖已配置的 AI 引擎。先完成第 2 步的引擎配置，按钮即可使用。</p></div>
+    <div class="faq-item"><h4>分镜里角色"换脸"了？</h4><p>上传该角色的参考图作为身份资产（控制 identity / wardrobe），软件会跨镜头锁定，避免漂移。详见<a href="features.html">功能介绍第 4 项</a>。</p></div>
+    <div class="faq-item"><h4>想换电脑继续用？</h4><p>菜单「导出配置」存为 .json，到新电脑「导入配置」即可；项目数据文件也可整体复制带走。</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="foot-cta">
+      <h2>教程看完了，去实践吧</h2>
+      <p>装好软件，按 5 步跑一遍，你就掌握了核心用法。</p>
+      <a href="index.html#download" class="btn btn-primary btn-lg">⬇ 免费下载 V1.0</a>
+      <a href="features.html" class="btn btn-ghost btn-lg" style="background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.25);">回看完整功能 →</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div>© <span data-year>2026</span> KuAi · 本地桌面应用</div>
+    <div><a href="index.html">下载</a> · <a href="features.html">功能</a> · <a href="guide.html">教程</a></div>
+  </div>
+</footer>
+
+<script src="assets/script.js"></script>
+</body>
+</html>
