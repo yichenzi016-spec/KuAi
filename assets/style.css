@@ -147,6 +147,9 @@ section { padding: 72px 0; }
 }
 .card h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
 .card p { color: var(--ink-soft); font-size: 14.5px; }
+.card-featured { border-color: #a4c7ff; background: linear-gradient(180deg, #f0f6ff, #fff); }
+.card-featured .ico { background: linear-gradient(135deg, #1E88E5, #42A5F5); }
+.card-featured h3 { color: #1565C0; }
 
 /* ---------- 下载区块 ---------- */
 .download { background: linear-gradient(180deg, #fff, #f7faff); }
