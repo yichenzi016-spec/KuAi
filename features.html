@@ -31,16 +31,31 @@
   <div class="hero-inner">
     <span class="badge"><span class="dot"></span> 15 个模块 · 一个工作台</span>
     <h1>功能<span class="grad">全解</span></h1>
-    <p class="lead">从灵感收集到成片脚本，每个模块该怎么用，一目了然。</p>
+    <p class="lead">从灵感收集到成片脚本，每个模块该怎么用，一目了然。<br><span style="font-size:14px;opacity:0.7;">更多功能请自行探索 ↓</span></p>
   </div>
 </header>
 
 <section style="padding-top:54px;">
   <div class="wrap">
 
-    <!-- 1 -->
+    <!-- 1. 引擎设置（先用） -->
     <div class="feat">
-      <div class="feat-head"><div class="feat-no">1</div><div class="t"><h3>工作台 · 提示词项目管理</h3><span>卡片 / 分组 · 拖拽 · 搜索 · 撤销重做</span></div></div>
+      <div class="feat-head"><div class="feat-no">1</div><div class="t"><h3>API / 翻译引擎设置</h3><span>13 家大模型 · 本地 Ollama 免 Key</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>集中配置用哪个大模型、填 Key / 地址 / 模型名，也支持完全离线的本地模型。</div>
+        <ul class="steps">
+          <li>主界面点 🌐 或菜单「<b>工具 → 翻译/润色引擎设置</b>」。</li>
+          <li>选择引擎，填写对应 <b>Key / URL / 模型名</b>（豆包还需 Endpoint ID；百度翻译只需 AppID / Secret）。</li>
+          <li>选 <b>Ollama</b> 可本地运行，免 API Key，数据不出本机。</li>
+          <li>支持 DeepSeek、通义千问、Kimi、豆包、智谱、MiniMax、零一万物、讯飞星火、腾讯混元、百度千帆、百度翻译、Ollama、OpenAI 兼容。</li>
+        </ul>
+        <div class="tags"><span class="tag">13 引擎</span><span class="tag g">Ollama 本地</span><span class="tag">统一配置</span></div>
+      </div>
+    </div>
+
+    <!-- 2. 工作台 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">2</div><div class="t"><h3>工作台 · 提示词项目管理</h3><span>卡片 / 分组 · 拖拽 · 搜索 · 撤销重做</span></div></div>
       <div class="feat-body">
         <div class="solve"><b>解决什么：</b>把零散的提示词集中管理，像文件夹一样分层归类、复用与检索，不再散落在记事本和聊天记录里。</div>
         <ul class="steps">
@@ -55,173 +70,9 @@
       </div>
     </div>
 
-    <!-- 2 -->
+    <!-- 3. 全网采集 -->
     <div class="feat">
-      <div class="feat-head"><div class="feat-no">2</div><div class="t"><h3>提示词编辑器 · 中英互译 / AI 润色 / 变量</h3><span>双语维护 · 一键翻译 · 智能变量</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>逐条打磨提示词，中英文双语维护，AI 扩写润色，把重复内容做成可复用变量。</div>
-        <ul class="steps">
-          <li><b>双击卡片</b>打开编辑窗，上下两栏分别是中文 / 英文提示词。</li>
-          <li>点 <b>⇄ 翻译</b> 调用当前引擎做中英互译，无需切换软件。</li>
-          <li>点 <b>✨ 一键润色</b>，可打开润色设置调整风格（电影感 / 写实 / 简洁等）。</li>
-          <li>点 <b>🔮 AI 识别变量</b>，自动把人名 / 日期 / 金额等提取为 <code>{{变量}}</code> 填空槽。</li>
-          <li>也可手动插入 <code>{{}}</code> 槽位，配合预设模板批量套用。</li>
-          <li>支持 <code>Ctrl+S</code> 保存、一键复制 / 清空。</li>
-        </ul>
-        <div class="tags"><span class="tag">中英双语</span><span class="tag">AI 润色</span><span class="tag g">变量槽</span><span class="tag">模板套用</span></div>
-      </div>
-    </div>
-
-    <!-- 3 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">3</div><div class="t"><h3>视频提示词生成</h3><span>文案 → 即梦/可灵/Seedance/Veo 镜头提示词</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>把一段文案自动拆成可直接粘贴到各视频平台的镜头提示词，省去逐条手写。</div>
-        <ul class="steps">
-          <li>导航点「<b>视频提示词</b>」，左面板选参数、右面板粘贴文案。</li>
-          <li>点「<b>生成</b>」，支持多维度组合：输出格式、时间格式、内容密度、模型适配、画幅（16:9 / 9:16 / 1:1 / 21:9）、语言、控制强度。</li>
-          <li>可「<b>导入文本</b>」批量读入，或点「查看示例」参考格式。</li>
-          <li>生成后「<b>复制输出</b>」或「<b>导出</b>」为 .txt / .docx。</li>
-          <li>用「模型连通性检测」确认当前 API 配置可用。</li>
-        </ul>
-        <div class="tags"><span class="tag">文生视频</span><span class="tag">多格式输出</span><span class="tag">画幅/密度可调</span><span class="tag g">一键导出</span></div>
-      </div>
-    </div>
-
-    <!-- 4 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">4</div><div class="t"><h3>智能分镜</h3><span>AI 编剧 · 可编辑分镜表 · 一致性锁定</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>AI 自动写分镜 + 类 Excel 可编辑表格，并自动保证角色 / 场景 / 道具跨镜头一致性，避免成片"换脸漂移"。</div>
-        <ul class="steps">
-          <li>导航点「<b>智能分镜</b>」，输入创意点「<b>一键生成</b>」。</li>
-          <li>系统并行提取<b>角色</b>与<b>场景</b>，再生成每镜的镜头编号、景别、运镜、台词旁白、时长、备注。</li>
-          <li>表格可直接<b>编辑任意单元格</b>，拖拽调整顺序。</li>
-          <li>上传<b>参考图资产</b>：角色图控身份 / 服装，场景图控环境，道具图控道具，防漂移。</li>
-          <li>导出为 <b>.xlsx</b>（默认）或 <b>.json</b> 交付拍摄 / 制作。</li>
-        </ul>
-        <div class="tags"><span class="tag">AI 编剧</span><span class="tag">分镜表编辑</span><span class="tag g">一致性锁定</span><span class="tag">参考图资产</span></div>
-      </div>
-    </div>
-
-    <!-- 5 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">5</div><div class="t"><h3>视觉灵感库</h3><span>参考图分类 · AI 反推提示词 · 虚拟滚动</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>把参考图当"灵感图书馆"按风格归档，AI 一键反推出中英文提示词，大图库也不卡。</div>
-        <ul class="steps">
-          <li>导航点「<b>视觉灵感</b>」，左侧 9 大分类 + 收件箱，右侧缩略图画廊。</li>
-          <li>点图片看大图，支持缩放 / 平移；点「<b>AI 分析</b>」用通义千问提取中英文提示词。</li>
-          <li>复制 cn / en、加标签、收藏，或<b>拖拽</b>归类到分类。</li>
-          <li>批量导入图片文件 / 文件夹 / 剪贴板，框选多选后批量导出。</li>
-          <li>一键把图片「发送到编辑器」继续加工。</li>
-        </ul>
-        <div class="tags"><span class="tag">9 大分类</span><span class="tag">AI 反推</span><span class="tag">拖拽归类</span><span class="tag g">虚拟滚动</span></div>
-      </div>
-    </div>
-
-    <!-- 6 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">6</div><div class="t"><h3>预设模板系统</h3><span>可复用提示词模板 · 分类管理</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>把高质量提示词做成可复用模板，分类管理、一键套用，减少重复劳动。</div>
-        <ul class="steps">
-          <li>在编辑器顶部预设条，点分类胶囊即可<b>套用</b>到中文 / 英文栏（左键填中文、右键填英文）。</li>
-          <li>点「<b>➕</b>」新增自定义分类与模板。</li>
-          <li>点「<b>🔄</b>」一键还原默认预设库。</li>
-          <li>内置「画质构图 / 镜头视角 / 运镜方式 / 风格滤镜」四大默认分组。</li>
-        </ul>
-        <div class="tags"><span class="tag">模板套用</span><span class="tag">自定义分类</span><span class="tag g">默认库</span></div>
-      </div>
-    </div>
-
-    <!-- 7 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">7</div><div class="t"><h3>API / 翻译引擎设置</h3><span>13 家大模型 · 本地 Ollama 免 Key</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>集中配置用哪个大模型、填 Key / 地址 / 模型名，也支持完全离线的本地模型。</div>
-        <ul class="steps">
-          <li>主界面点 🌐 或菜单「<b>工具 → 翻译/润色引擎设置</b>」。</li>
-          <li>选择引擎，填写对应 <b>Key / URL / 模型名</b>（豆包还需 Endpoint ID；百度翻译只需 AppID / Secret）。</li>
-          <li>选 <b>Ollama</b> 可本地运行，免 API Key，数据不出本机。</li>
-          <li>支持 DeepSeek、通义千问、Kimi、豆包、智谱、MiniMax、零一万物、讯飞星火、腾讯混元、百度千帆、百度翻译、Ollama、OpenAI 兼容。</li>
-        </ul>
-        <div class="tags"><span class="tag">13 引擎</span><span class="tag g">Ollama 本地</span><span class="tag">统一配置</span></div>
-      </div>
-    </div>
-
-    <!-- 8 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">8</div><div class="t"><h3>清理工具</h3><span>脏提示词清洗 · 旧稿自动归档</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>把网上复制来的脏提示词洗干净，并把项目里的旧稿自动归档，保持工作区整洁。</div>
-        <ul class="steps">
-          <li>菜单「<b>工具 → 旧稿归档</b>」打开归档窗口，扫描项目文件夹。</li>
-          <li>把"定稿"里的旧版本自动移入"初稿"箱，只保留最新一版。</li>
-          <li>通过「清洗卡片设置」配置去重 / 去噪 / 排序 / 格式化规则。</li>
-        </ul>
-        <div class="tags"><span class="tag">去重去噪</span><span class="tag">旧稿归档</span><span class="tag g">规则可配</span></div>
-      </div>
-    </div>
-
-    <!-- 9 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">9</div><div class="t"><h3>自动保存 / 历史快照</h3><span>每 2 分钟存盘 · 50 个快照可回退</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>防丢稿，可随时回退到任意历史版本。</div>
-        <ul class="steps">
-          <li>无需手动——<b>每 2 分钟定时保存</b>，生成操作后会自动存盘。</li>
-          <li>系统保留最多 <b>50 个历史快照</b>（去重、原子写入防损坏）。</li>
-          <li>在视频 / 分镜模块点「<b>历史</b>」按钮，浏览并恢复任意快照。</li>
-        </ul>
-        <div class="tags"><span class="tag g">防丢稿</span><span class="tag">50 快照</span><span class="tag">一键回退</span></div>
-      </div>
-    </div>
-
-    <!-- 10 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">10</div><div class="t"><h3>崩溃保护 / 恢复</h3><span>黑匣子日志 · 崩溃前备份一键恢复</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>出错不闪退，留下日志黑匣子，并能从崩溃前的备份恢复工作。</div>
-        <ul class="steps">
-          <li>启动时自动检测<b>崩溃备份</b>，弹窗询问「恢复 / 丢弃」。</li>
-          <li>日常异常写入 <code>crash_logs/*.log</code> 并弹窗提示。</li>
-          <li>主数据另存 <code>软件配置数据(请勿删除).json.crash_backup.json</code> 作为兜底。</li>
-        </ul>
-        <div class="tags"><span class="tag g">不闪退</span><span class="tag">崩溃日志</span><span class="tag">一键恢复</span></div>
-      </div>
-    </div>
-
-    <!-- 11 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">11</div><div class="t"><h3>全局捕获</h3><span>截图 / 抓字 → 灵感库 / 提示词</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>随手把屏幕上的文字或图片抓进灵感库 / 提示词，贴合创作者随时收集素材的习惯。</div>
-        <ul class="steps">
-          <li>开启<b>全局捕获</b>，用截屏框选区域（带放大镜 / 工具栏）。</li>
-          <li>抓取的文字直接进提示词，图片直接进视觉灵感库。</li>
-        </ul>
-        <div class="tags"><span class="tag">截图抓字</span><span class="tag">即时入库</span></div>
-      </div>
-    </div>
-
-    <!-- 12 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">12</div><div class="t"><h3>快捷键 / 工具栏自定义</h3><span>热键重映射 · 配置导入导出</span></div></div>
-      <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>按个人习惯自定义操作与热键，并把配置随身带走。</div>
-        <ul class="steps">
-          <li>菜单「视图 / 工具」打开<b>快捷键设置</b>窗口，修改任意热键。</li>
-          <li>工具栏编辑模式下改名 / 改色 / 拖动排列。</li>
-          <li>通过「<b>导出 / 导入配置</b>」把设置存为 .json，换电脑也能复用。</li>
-        </ul>
-        <div class="tags"><span class="tag">热键自定义</span><span class="tag">配置迁移</span><span class="tag g">工具栏编辑</span></div>
-      </div>
-    </div>
-
-    <!-- 13 -->
-    <div class="feat">
-      <div class="feat-head"><div class="feat-no">13</div><div class="t"><h3>全网采集</h3><span>一键抓取 · AI 清洗入库 · 提示词反推</span></div></div>
+      <div class="feat-head"><div class="feat-no">3</div><div class="t"><h3>全网采集</h3><span>一键抓取 · AI 清洗入库 · 提示词反推</span></div></div>
       <div class="feat-body">
         <div class="solve"><b>解决什么：</b>手动在网上找参考素材太慢？全网采集帮你批量抓取目标平台的内容，自动清洗去噪后 AI 反推成可复用的提示词，直接进入灵感库或提示词库。</div>
         <ul class="steps">
@@ -236,9 +87,105 @@
       </div>
     </div>
 
-    <!-- 14 -->
+    <!-- 4. 视觉灵感库 -->
     <div class="feat">
-      <div class="feat-head"><div class="feat-no">14</div><div class="t"><h3>多格式导入导出</h3><span>JSON / Excel / SRT / TXT / DOCX 全覆盖</span></div></div>
+      <div class="feat-head"><div class="feat-no">4</div><div class="t"><h3>视觉灵感库</h3><span>参考图分类 · AI 反推提示词 · 虚拟滚动</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>把参考图当"灵感图书馆"按风格归档，AI 一键反推出中英文提示词，大图库也不卡。</div>
+        <ul class="steps">
+          <li>导航点「<b>视觉灵感</b>」，左侧 9 大分类 + 收件箱，右侧缩略图画廊。</li>
+          <li>点图片看大图，支持缩放 / 平移；点「<b>AI 分析</b>」用通义千问提取中英文提示词。</li>
+          <li>复制 cn / en、加标签、收藏，或<b>拖拽</b>归类到分类。</li>
+          <li>批量导入图片文件 / 文件夹 / 剪贴板，框选多选后批量导出。</li>
+          <li>一键把图片「发送到编辑器」继续加工。</li>
+        </ul>
+        <div class="tags"><span class="tag">9 大分类</span><span class="tag">AI 反推</span><span class="tag">拖拽归类</span><span class="tag g">虚拟滚动</span></div>
+      </div>
+    </div>
+
+    <!-- 5. 提示词编辑器 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">5</div><div class="t"><h3>提示词编辑器 · 中英互译 / AI 润色 / 变量</h3><span>双语维护 · 一键翻译 · 智能变量</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>逐条打磨提示词，中英文双语维护，AI 扩写润色，把重复内容做成可复用变量。</div>
+        <ul class="steps">
+          <li><b>双击卡片</b>打开编辑窗，上下两栏分别是中文 / 英文提示词。</li>
+          <li>点 <b>⇄ 翻译</b> 调用当前引擎做中英互译，无需切换软件。</li>
+          <li>点 <b>✨ 一键润色</b>，可打开润色设置调整风格（电影感 / 写实 / 简洁等）。</li>
+          <li>点 <b>🔮 AI 识别变量</b>，自动把人名 / 日期 / 金额等提取为 <code>{{变量}}</code> 填空槽。</li>
+          <li>也可手动插入 <code>{{}}</code> 槽位，配合预设模板批量套用。</li>
+          <li>支持 <code>Ctrl+S</code> 保存、一键复制 / 清空。</li>
+        </ul>
+        <div class="tags"><span class="tag">中英双语</span><span class="tag">AI 润色</span><span class="tag g">变量槽</span><span class="tag">模板套用</span></div>
+      </div>
+    </div>
+
+    <!-- 6. 预设模板系统 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">6</div><div class="t"><h3>预设模板系统</h3><span>可复用提示词模板 · 分类管理</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>把高质量提示词做成可复用模板，分类管理、一键套用，减少重复劳动。</div>
+        <ul class="steps">
+          <li>在编辑器顶部预设条，点分类胶囊即可<b>套用</b>到中文 / 英文栏（左键填中文、右键填英文）。</li>
+          <li>点「<b>➕</b>」新增自定义分类与模板。</li>
+          <li>点「<b>🔄</b>」一键还原默认预设库。</li>
+          <li>内置「画质构图 / 镜头视角 / 运镜方式 / 风格滤镜」四大默认分组。</li>
+        </ul>
+        <div class="tags"><span class="tag">模板套用</span><span class="tag">自定义分类</span><span class="tag g">默认库</span></div>
+      </div>
+    </div>
+
+    <!-- 7. 智能分镜（核心） -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">7</div><div class="t"><h3>⭐ 智能分镜</h3><span>AI 编剧 · 可编辑分镜表 · 一致性锁定</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>AI 自动写分镜 + 类 Excel 可编辑表格，并自动保证角色 / 场景 / 道具跨镜头一致性，避免成片"换脸漂移"。</div>
+        <ul class="steps">
+          <li>导航点「<b>智能分镜</b>」，输入创意点「<b>一键生成</b>」。</li>
+          <li>系统并行提取<b>角色</b>与<b>场景</b>，再生成每镜的镜头编号、景别、运镜、台词旁白、时长、备注。</li>
+          <li>表格可直接<b>编辑任意单元格</b>，拖拽调整顺序。</li>
+          <li>上传<b>参考图资产</b>：角色图控身份 / 服装，场景图控环境，道具图控道具，防漂移。</li>
+          <li>导出为 <b>.xlsx</b>（默认）或 <b>.json</b> 交付拍摄 / 制作。</li>
+        </ul>
+        <div class="tags"><span class="tag">AI 编剧</span><span class="tag">分镜表编辑</span><span class="tag g">一致性锁定</span><span class="tag">参考图资产</span></div>
+      </div>
+    </div>
+
+    <!-- 8. 视频提示词生成（核心） -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">8</div><div class="t"><h3>⭐ 视频提示词生成</h3><span>文案 → 即梦/可灵/Seedance/Veo 镜头级提示词</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>将一段文案自动拆解为可直接粘贴到各视频平台的镜头级提示词，省去逐条手写。</div>
+        <ul class="steps">
+          <li>导航点「<b>视频提示词</b>」，左面板选参数、右面板粘贴文案。</li>
+          <li>点「<b>生成</b>」，支持多维度组合：输出格式、时间格式、内容密度、模型适配、画幅（16:9 / 9:16 / 1:1 / 21:9）、语言、控制强度。</li>
+          <li>可「<b>导入文本</b>」批量读入，或点「查看示例」参考格式。</li>
+          <li>生成后「<b>复制输出</b>」或「<b>导出</b>」为 .txt / .docx。</li>
+          <li>用「模型连通性检测」确认当前 API 配置可用。</li>
+        </ul>
+        <div class="tags"><span class="tag">文案拆镜头</span><span class="tag">多平台适配</span><span class="tag">画幅/密度可调</span><span class="tag g">一键导出</span></div>
+      </div>
+    </div>
+
+    <!-- 9. 视频提示词导出工作台 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">9</div><div class="t"><h3>视频提示词导出工作台</h3><span>批量管理 · 多版本对比 · 一键交付</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>生成了大量视频提示词后怎么管？导出工作台提供集中管理、多版本对比、按场景筛选的能力，让交付更专业。</div>
+        <ul class="steps">
+          <li>导航点「<b>视频提示词导出</b>」，查看所有已生成的提示词集合。</li>
+          <li>按<b>输出平台</b>（即梦/可灵/Seedance/Veo/Runway）、画幅、时间格式筛选和排序。</li>
+          <li>支持<b>多版本并排对比</b>：同一文案在不同参数下的输出差异一目了然。</li>
+          <li>选中需要的条目，<b>批量导出</b>为 .txt / .docx 或直接复制到剪贴板。</li>
+          <li>导出时可选是否包含镜头编号、景别、运镜等结构化标注。</li>
+        </ul>
+        <div class="tags"><span class="tag">批量管理</span><span class="tag">版本对比</span><span class="tag">多平台筛选</span><span class="tag g">结构化导出</span></div>
+      </div>
+    </div>
+
+    <!-- 10. 多格式导入导出 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">10</div><div class="t"><h3>多格式导入导出</h3><span>JSON / Excel / SRT / TXT / DOCX 全覆盖</span></div></div>
       <div class="feat-body">
         <div class="solve"><b>解决什么：</b>你的数据不应该被锁在一个软件里。KuAi 支持主流格式双向流转，方便对接其他工具和交付给团队。</div>
         <ul class="steps">
@@ -252,19 +199,72 @@
       </div>
     </div>
 
-    <!-- 15 -->
+    <!-- 11. 清理工具 -->
     <div class="feat">
-      <div class="feat-head"><div class="feat-no">15</div><div class="t"><h3>视频提示词导出工作台</h3><span>批量管理 · 多版本对比 · 一键交付</span></div></div>
+      <div class="feat-head"><div class="feat-no">11</div><div class="t"><h3>清理工具</h3><span>脏提示词清洗 · 旧稿自动归档</span></div></div>
       <div class="feat-body">
-        <div class="solve"><b>解决什么：</b>生成了大量视频提示词后怎么管？导出工作台提供集中管理、多版本对比、按场景筛选的能力，让交付更专业。</div>
+        <div class="solve"><b>解决什么：</b>把网上复制来的脏提示词洗干净，并把项目里的旧稿自动归档，保持工作区整洁。</div>
         <ul class="steps">
-          <li>导航点「<b>视频提示词导出</b>」，查看所有已生成的提示词集合。</li>
-          <li>按<b>输出平台</b>（即梦/可灵/Seedance/Veo/Runway）、画幅、时间格式筛选和排序。</li>
-          <li>支持<b>多版本并排对比</b>：同一文案在不同参数下的输出差异一目了然。</li>
-          <li>选中需要的条目，<b>批量导出</b>为 .txt / .docx 或直接复制到剪贴板。</li>
-          <li>导出时可选是否包含镜头编号、景别、运镜等结构化标注。</li>
+          <li>菜单「<b>工具 → 旧稿归档</b>」打开归档窗口，扫描项目文件夹。</li>
+          <li>把"定稿"里的旧版本自动移入"初稿"箱，只保留最新一版。</li>
+          <li>通过「清洗卡片设置」配置去重 / 去噪 / 排序 / 格式化规则。</li>
         </ul>
-        <div class="tags"><span class="tag">批量管理</span><span class="tag">版本对比</span><span class="tag">多平台筛选</span><span class="tag g">结构化导出</span></div>
+        <div class="tags"><span class="tag">去重去噪</span><span class="tag">旧稿归档</span><span class="tag g">规则可配</span></div>
+      </div>
+    </div>
+
+    <!-- 12. 全局捕获 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">12</div><div class="t"><h3>全局捕获</h3><span>截图 / 抓字 → 灵感库 / 提示词</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>随手把屏幕上的文字或图片抓进灵感库 / 提示词，贴合创作者随时收集素材的习惯。</div>
+        <ul class="steps">
+          <li>开启<b>全局捕获</b>，用截屏框选区域（带放大镜 / 工具栏）。</li>
+          <li>抓取的文字直接进提示词，图片直接进视觉灵感库。</li>
+        </ul>
+        <div class="tags"><span class="tag">截图抓字</span><span class="tag">即时入库</span></div>
+      </div>
+    </div>
+
+    <!-- 13. 快捷键自定义 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">13</div><div class="t"><h3>快捷键 / 工具栏自定义</h3><span>热键重映射 · 配置导入导出</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>按个人习惯自定义操作与热键，并把配置随身带走。</div>
+        <ul class="steps">
+          <li>菜单「视图 / 工具」打开<b>快捷键设置</b>窗口，修改任意热键。</li>
+          <li>工具栏编辑模式下改名 / 改色 / 拖动排列。</li>
+          <li>通过「<b>导出 / 导入配置</b>」把设置存为 .json，换电脑也能复用。</li>
+        </ul>
+        <div class="tags"><span class="tag">热键自定义</span><span class="tag">配置迁移</span><span class="tag g">工具栏编辑</span></div>
+      </div>
+    </div>
+
+    <!-- 14. 自动保存/快照 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">14</div><div class="t"><h3>自动保存 / 历史快照</h3><span>每 2 分钟存盘 · 50 个快照可回退</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>防丢稿，可随时回退到任意历史版本。</div>
+        <ul class="steps">
+          <li>无需手动——<b>每 2 分钟定时保存</b>，生成操作后会自动存盘。</li>
+          <li>系统保留最多 <b>50 个历史快照</b>（去重、原子写入防损坏）。</li>
+          <li>在视频 / 分镜模块点「<b>历史</b>」按钮，浏览并恢复任意快照。</li>
+        </ul>
+        <div class="tags"><span class="tag g">防丢稿</span><span class="tag">50 快照</span><span class="tag">一键回退</span></div>
+      </div>
+    </div>
+
+    <!-- 15. 崩溃保护 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">15</div><div class="t"><h3>崩溃保护 / 恢复</h3><span>黑匣子日志 · 崩溃前备份一键恢复</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>出错不闪退，留下日志黑匣子，并能从崩溃前的备份恢复工作。</div>
+        <ul class="steps">
+          <li>启动时自动检测<b>崩溃备份</b>，弹窗询问「恢复 / 丢弃」。</li>
+          <li>日常异常写入 <code>crash_logs/*.log</code> 并弹窗提示。</li>
+          <li>主数据另存 <code>软件配置数据(请勿删除).json.crash_backup.json</code> 作为兜底。</li>
+        </ul>
+        <div class="tags"><span class="tag g">不闪退</span><span class="tag">崩溃日志</span><span class="tag">一键恢复</span></div>
       </div>
     </div>
 
@@ -279,15 +279,18 @@
       <p>你的每一条反馈都会帮助我们做得更好。</p>
     </div>
     <div class="fb-grid">
-      <div class="fb-card fb-card-primary">
-        <div class="fb-icon">🐛</div><h3>提交 Bug / 功能建议</h3>
-        <p>通过 GitHub Issues 提交，可跟踪处理进度，适合详细描述问题和附图。</p>
-        <a href="https://github.com/yichenzi016-spec/KuAi/issues/new" target="_blank" class="btn btn-primary" style="margin-top:14px;display:inline-flex;">去提交 Issue →</a>
-      </div>
       <div class="fb-card">
         <div class="fb-icon">📧</div><h3>邮件反馈</h3>
         <p>直接发送邮件描述问题或建议，支持附件截图。</p>
-        <a href="mailto:feedback@kuai-tool.dev?subject=KuAi%20%E5%8F%8D%E9%A6%88&body=%E8%AF%B7%E6%8F%8F%E8%BF%B0%9A%94%E9%AE%AE%E9%A2%98..." class="btn btn-ghost" style="margin-top:14px;display:inline-flex;border-color:var(--primary);color:var(--primary);">📧 发送邮件</a>
+        <a href="mailto:feedback@kuai-tool.dev?subject=KuAi%20%E5%8F%8D%E9%A6%88&body=%E8%AF%B7%E6%8F%8F%E8%BF%B0..." class="btn btn-ghost" style="margin-top:14px;display:inline-flex;border-color:var(--primary);color:var(--primary);">📧 发送邮件</a>
+      </div>
+      <div class="fb-card fb-card-primary">
+        <div class="fb-icon">💬</div><h3>加入微信群聊</h3>
+        <p>扫码或搜索加入 KuAi 用户交流群，实时沟通、分享使用技巧、获取更新通知。</p>
+        <div style="margin-top:14px;text-align:center;">
+          <div style="width:140px;height:140px;background:#f0f0f0;border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#999;border:2px dashed #ccc;">微信群二维码<br>（待补充）</div>
+          <span style="font-size:13px;color:#666;">微信搜索群名或扫码加入</span>
+        </div>
       </div>
     </div>
   </div>
