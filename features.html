@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>功能介绍 — KuAi V1.0</title>
-<meta name="description" content="12 大功能模块详解：提示词管理、AI 中英互译、视频提示词生成、智能分镜、视觉灵感库、预设模板、API 设置、清理工具、自动保存、崩溃恢复、全局捕获、快捷键自定义。">
+<meta name="description" content="15 大功能模块详解：提示词管理、AI中英互译、视频提示词生成、智能分镜、视觉灵感库、全网采集、预设模板、API设置、清理工具、自动保存、崩溃恢复、全局捕获、快捷键自定义、多格式导入导出、视频提示词导出工作台。">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -21,6 +21,7 @@
       <a href="features.html" class="active">功能介绍</a>
       <a href="guide.html">上手教程</a>
       <a href="index.html#faq">常见问题</a>
+      <a href="index.html#feedback">意见反馈</a>
       <a href="index.html#download" class="nav-cta">立即下载</a>
     </div>
   </div>
@@ -28,7 +29,7 @@
 
 <header class="hero" style="padding:70px 0 58px;">
   <div class="hero-inner">
-    <span class="badge"><span class="dot"></span> 12 个模块 · 一个工作台</span>
+    <span class="badge"><span class="dot"></span> 15 个模块 · 一个工作台</span>
     <h1>功能<span class="grad">全解</span></h1>
     <p class="lead">从灵感收集到成片脚本，每个模块该怎么用，一目了然。</p>
   </div>
@@ -218,6 +219,77 @@
       </div>
     </div>
 
+    <!-- 13 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">13</div><div class="t"><h3>全网采集</h3><span>一键抓取 · AI 清洗入库 · 提示词反推</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>手动在网上找参考素材太慢？全网采集帮你批量抓取目标平台的内容，自动清洗去噪后 AI 反推成可复用的提示词，直接进入灵感库或提示词库。</div>
+        <ul class="steps">
+          <li>导航点「<b>全网采集</b>」，输入目标网址或关键词。</li>
+          <li>选择采集范围：单页内容 / 搜索结果列表 / 指定平台的素材池。</li>
+          <li>点「<b>开始采集</b>」，自动抓取文本、图片、元数据，智能过滤广告和无关内容。</li>
+          <li>抓取结果支持<b>预览 / 筛选 / 编辑</b>，确认后一键发送到视觉灵感库或提示词编辑器。</li>
+          <li>可选开启 <b>AI 自动反推</b>：对采集到的图片/文案实时调用大模型生成中英文提示词。</li>
+          <li>支持<b>定时任务</b>：设置采集计划，定期自动更新灵感库内容。</li>
+        </ul>
+        <div class="tags"><span class="tag">批量抓取</span><span class="tag">AI 反推</span><span class="tag">定时任务</span><span class="tag g">多平台</span></div>
+      </div>
+    </div>
+
+    <!-- 14 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">14</div><div class="t"><h3>多格式导入导出</h3><span>JSON / Excel / SRT / TXT / DOCX 全覆盖</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>你的数据不应该被锁在一个软件里。KuAi 支持主流格式双向流转，方便对接其他工具和交付给团队。</div>
+        <ul class="steps">
+          <li><b>项目导出</b>：工作台全部卡片和分组 → <code>.json</code> 完整备份，可跨电脑恢复。</li>
+          <li><b>分镜导出</b>：分镜表 → <code>.xlsx</code>（Excel 可继续编辑）或 <code>.json</code> 给后期/拍摄使用。</li>
+          <li><b>提示词导出</b>：生成的视频提示词 → <code>.txt</code> / <code>.docx</code> 直接交付。</li>
+          <li><b>SRT 字幕导出</b>：分镜台词旁白 → <code>.srt</code> 字幕文件，直接导入剪辑软件。</li>
+          <li><b>批量导入</b>：支持从文件夹 / 剪贴板 / 拖拽批量导入提示词条目或参考图。</li>
+        </ul>
+        <div class="tags"><span class="tag">JSON</span><span class="tag">Excel</span><span class="tag">SRT 字幕</span><span class="tag g">DOCX</span></div>
+      </div>
+    </div>
+
+    <!-- 15 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">15</div><div class="t"><h3>视频提示词导出工作台</h3><span>批量管理 · 多版本对比 · 一键交付</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>生成了大量视频提示词后怎么管？导出工作台提供集中管理、多版本对比、按场景筛选的能力，让交付更专业。</div>
+        <ul class="steps">
+          <li>导航点「<b>视频提示词导出</b>」，查看所有已生成的提示词集合。</li>
+          <li>按<b>输出平台</b>（即梦/可灵/Seedance/Veo/Runway）、画幅、时间格式筛选和排序。</li>
+          <li>支持<b>多版本并排对比</b>：同一文案在不同参数下的输出差异一目了然。</li>
+          <li>选中需要的条目，<b>批量导出</b>为 .txt / .docx 或直接复制到剪贴板。</li>
+          <li>导出时可选是否包含镜头编号、景别、运镜等结构化标注。</li>
+        </ul>
+        <div class="tags"><span class="tag">批量管理</span><span class="tag">版本对比</span><span class="tag">多平台筛选</span><span class="tag g">结构化导出</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="feedback" style="background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">用户反馈</span>
+      <h2>遇到 Bug 或有新想法？告诉我们</h2>
+      <p>你的每一条反馈都会帮助我们做得更好。</p>
+    </div>
+    <div class="fb-grid">
+      <div class="fb-card fb-card-primary">
+        <div class="fb-icon">🐛</div><h3>提交 Bug / 功能建议</h3>
+        <p>通过 GitHub Issues 提交，可跟踪处理进度，适合详细描述问题和附图。</p>
+        <a href="https://github.com/yichenzi016-spec/KuAi/issues/new" target="_blank" class="btn btn-primary" style="margin-top:14px;display:inline-flex;">去提交 Issue →</a>
+      </div>
+      <div class="fb-card">
+        <div class="fb-icon">📧</div><h3>邮件反馈</h3>
+        <p>直接发送邮件描述问题或建议，支持附件截图。</p>
+        <a href="mailto:feedback@kuai-tool.dev?subject=KuAi%20%E5%8F%8D%E9%A6%88&body=%E8%AF%B7%E6%8F%8F%E8%BF%B0%9A%94%E9%AE%AE%E9%A2%98..." class="btn btn-ghost" style="margin-top:14px;display:inline-flex;border-color:var(--primary);color:var(--primary);">📧 发送邮件</a>
+      </div>
+    </div>
   </div>
 </section>
 
