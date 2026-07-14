@@ -181,24 +181,27 @@
       <p>你的每一条反馈都会帮助我们做得更好。</p>
     </div>
 
-    <!-- 反馈方式卡片 -->
-    <div class="fb-grid">
-      <!-- 方式一：邮件反馈 -->
-      <div class="fb-card">
-        <div class="fb-icon">📧</div>
-        <h3>邮件反馈</h3>
-        <p>直接发送邮件描述问题或建议，支持附件截图。</p>
-        <a href="mailto:feedback@kuai-tool.dev?subject=KuAi%20反馈%20-%20Bug%20/%20%E5%BB%BA%E8%AE%AE&body=%E8%AF%B7%E6%8F%8F%E8%BF%B0%EF%BC%9A%0A%0A1.%E8%BD%AF%E4%BB%B6%E7%89%88%E6%9C%AC%EF%BC%9AV1.0%0A2.Windows%E7%89%88%E6%9C%AC%EF%BC%9A%0A3.%E9%97%AE%E9%A2%98%E6%8F%8F%E8%BF%B0%EF%BC%9A%0A4.%E5%A4%8D%E73%B0%E6%AD%A5%E9%AA%A4%EF%BC%9A%0A" class="btn btn-ghost" style="margin-top:14px;display:inline-flex;border-color:var(--primary);color:var(--primary);">📧 发送邮件</a>
-      </div>
-
-      <!-- 方式二：加入微信群 -->
+    <!-- 反馈卡片（合并） -->
+    <div class="fb-grid" style="max-width:560px;margin:0 auto;">
       <div class="fb-card fb-card-primary">
-        <div class="fb-icon">💬</div>
-        <h3>加入微信群聊</h3>
-        <p>扫码或搜索加入 KuAi 用户交流群，实时沟通、分享使用技巧、获取更新通知。</p>
-        <div style="margin-top:14px;text-align:center;">
-          <div style="width:140px;height:140px;background:#f0f0f0;border-radius:12px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#999;border:2px dashed #ccc;">微信群二维码<br>（待补充）</div>
-          <span style="font-size:13px;color:#666;">微信搜索群名或扫码加入</span>
+        <div style="display:flex;gap:32px;align-items:flex-start;">
+          <!-- 左：邮件 -->
+          <div style="flex:1;text-align:center;">
+            <div class="fb-icon">📧</div>
+            <h3>发送邮件</h3>
+            <p style="font-size:13px;">直接发送邮件描述问题或建议，支持附件截图。</p>
+            <a href="mailto:feedback@kuai-tool.dev?subject=KuAi%20反馈&body=%E8%AF%B7%E6%8F%8F%E8%BF%B0..." class="btn btn-ghost" style="display:inline-flex;border-color:var(--primary);color:var(--primary);font-size:14px;">✉️ 发送邮件</a>
+          </div>
+          <!-- 右：微信群 -->
+          <div style="width:1px;background:#e0e0e0;"></div>
+          <!-- 右：微信群 -->
+          <div style="flex:1;text-align:center;">
+            <div class="fb-icon">💬</div>
+            <h3>加入群聊</h3>
+            <p style="font-size:13px;">扫码加入 KuAi 用户交流群，实时沟通。</p>
+            <div style="width:120px;height:120px;background:#f5f5f5;border-radius:10px;margin:8px auto 4px;display:flex;align-items:center;justify-content:center;font-size:11px;color:#bbb;border:2px dashed #ddd;">微信群二维码<br>（待补充）</div>
+            <span style="font-size:12px;color:#999;">微信搜索群名加入</span>
+          </div>
         </div>
       </div>
     </div>
