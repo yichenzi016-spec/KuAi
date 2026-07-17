@@ -52,10 +52,9 @@ a:hover { color: var(--primary-hover); }
   height: 62px; display: flex; align-items: center; justify-content: space-between;
 }
 .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 17px; color: var(--ink); }
-.brand .logo {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(135deg, var(--primary), #6a5cff);
-  display: grid; place-items: center; color: #fff; font-size: 15px; box-shadow: var(--shadow-sm);
+.brand .logo-img {
+  width: 32px; height: 32px; border-radius: 8px;
+  object-fit: contain; box-shadow: var(--shadow-sm);
 }
 .brand small { font-weight: 500; color: var(--ink-mute); font-size: 12px; margin-left: 2px; }
 .nav-links { display: flex; align-items: center; gap: 6px; }
