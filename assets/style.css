@@ -287,13 +287,15 @@ footer.site a:hover { color: #fff; }
   justify-content: center;
   margin-left: 10px;
   vertical-align: middle;
-  padding: 4px 14px;
+  padding: 0 14px;
+  height: 34px;
   border-radius: 999px;
   background: rgba(46, 125, 50, .10);
   color: #256b29;
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
-  line-height: 1.4;
+  line-height: 1;
+  text-align: center;
 }
 .dl-count b { color: #1b7a2e; font-weight: 700; }
