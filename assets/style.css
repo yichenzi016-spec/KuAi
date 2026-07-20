@@ -279,3 +279,18 @@ footer.site a:hover { color: #fff; }
   .lead-grid { grid-template-columns: 1fr; }
   .fb-grid { grid-template-columns: 1fr; }
 }
+
+/* ---------- 下载次数徽章 ---------- */
+.dl-count {
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: middle;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: rgba(46, 125, 50, .10);
+  color: #256b29;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.dl-count b { color: #1b7a2e; font-weight: 700; }

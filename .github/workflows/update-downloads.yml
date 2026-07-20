@@ -1,0 +1,49 @@
+name: Update download count
+
+on:
+  schedule:
+    - cron: '0 * * * *'      # 每小时同步一次真实下载数
+  workflow_dispatch:         # 也支持手动触发
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch download count from GitHub Releases
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          curl -s -H "Authorization: token $TOKEN" \
+               -H "Accept: application/vnd.github+json" \
+               "https://api.github.com/repos/yichenzi016-spec/KuAi/releases" \
+          | python3 -c "
+          import sys, json, datetime
+          data = json.load(sys.stdin)
+          total = 0
+          for rel in data:
+              if rel.get('draft') or rel.get('prerelease'):
+                  continue
+              for a in rel.get('assets', []):
+                  total += a.get('download_count', 0)
+          out = {
+              'downloads': total,
+              'updated_at': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
+          }
+          with open('downloads.json', 'w', encoding='utf-8') as f:
+              json.dump(out, f, ensure_ascii=False, indent=2)
+          print('total downloads =', total)
+          "
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add downloads.json
+          git diff --cached --quiet || git commit -m "chore: sync download count"
+          git push
