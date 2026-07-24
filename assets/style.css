@@ -299,3 +299,21 @@ footer.site a:hover { color: #fff; }
   text-align: center;
 }
 .dl-count b { color: #1b7a2e; font-weight: 700; }
+
+/* ---------- 全局图片安全 + 超小屏微调 ---------- */
+img { max-width: 100%; height: auto; }
+
+@media (max-width: 480px) {
+  .hero { padding: 64px 0 52px; }
+  .hero h1 { font-size: 27px; }
+  .section-head h2 { font-size: 22px; }
+  .section-head { margin-bottom: 32px; }
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .dl-box { grid-template-columns: 1fr; }
+  .dl-main, .dl-side { padding: 26px 22px; }
+  .foot-cta { padding: 34px 22px; }
+  .feat-head { gap: 12px; padding: 18px 20px; }
+  .feat-body { padding: 20px; }
+  .wrap { padding: 0 16px; }
+  section { padding: 56px 0; }
+}
