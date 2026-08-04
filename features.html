@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>功能介绍 — KuAi V1.1.0</title>
-<meta name="description" content="15 大功能模块详解：提示词管理、AI中英互译、视频提示词生成、智能分镜、视觉灵感库、全网采集、预设模板、API设置、清理工具、自动保存、崩溃恢复、全局捕获、快捷键自定义、多格式导入导出、视频提示词导出工作台。">
+<meta name="description" content="16 大功能模块详解：提示词管理、AI中英互译、视频提示词生成、智能分镜、视觉灵感库、全网采集、预设模板、API设置、清理工具、自动保存、崩溃恢复、全局捕获、快捷键自定义、多格式导入导出、视频提示词导出工作台、AI 声音克隆。">
 <meta name="theme-color" content="#0e1726">
-<meta property="og:title" content="KuAi 功能介绍 — 15 大功能模块全解">
-<meta property="og:description" content="从灵感收集到成片脚本，提示词管理、AI中英互译、视频提示词生成、智能分镜、视觉灵感库等 15 个模块怎么用，一目了然。">
+<meta property="og:title" content="KuAi 功能介绍 — 16 大功能模块全解">
+<meta property="og:description" content="从灵感收集到成片脚本，提示词管理、AI中英互译、视频提示词生成、智能分镜、视觉灵感库、AI 声音克隆等 16 个模块怎么用，一目了然。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yichenzi016-spec.github.io/KuAi/features.html">
 <meta name="twitter:card" content="summary_large_image">
@@ -35,7 +35,7 @@
 
 <header class="hero" style="padding:70px 0 58px;">
   <div class="hero-inner">
-    <span class="badge"><span class="dot"></span> 15 个模块 · 一个工作台</span>
+    <span class="badge"><span class="dot"></span> 16 个模块 · 一个工作台</span>
     <h1>功能<span class="grad">全解</span></h1>
     <p class="lead">从灵感收集到成片脚本，每个模块该怎么用，一目了然。<br><span style="font-size:14px;opacity:0.7;">更多功能请自行探索 ↓</span></p>
   </div>
@@ -271,6 +271,22 @@
           <li>主数据另存 <code>软件配置数据(请勿删除).json.crash_backup.json</code> 作为兜底。</li>
         </ul>
         <div class="tags"><span class="tag g">不闪退</span><span class="tag">崩溃日志</span><span class="tag">一键恢复</span></div>
+      </div>
+    </div>
+
+    <!-- 16. AI 声音克隆 -->
+    <div class="feat">
+      <div class="feat-head"><div class="feat-no">16</div><div class="t"><h3>🎙️ AI 声音克隆（AI 克隆配音）</h3><span>参考音频克隆音色 · 108 种语言 · 本地 TTS</span></div></div>
+      <div class="feat-body">
+        <div class="solve"><b>解决什么：</b>不想自己配旁白、又嫌通用机器人腔？上传一小段参考音频，AI 就能克隆出这个人的音色，把你写好的文案念出来，适合做配音、有声稿、角色台词。</div>
+        <ul class="steps">
+          <li>左侧导航点「<b>AI 克隆配音</b>」，首次使用按提示安装本地引擎（基于 dots.tts / IndexTTS2 开源模型，模型约 13.4GB，需单独下载放入 <code>tts_engine</code> 文件夹）。</li>
+          <li>上传一段<b>参考音频</b>（几秒到一分钟清晰人声即可），作为要克隆的音色。</li>
+          <li>在中间文本框粘贴 / 输入要念的文案，选语言与情绪预设。</li>
+          <li>点「<b>生成</b>」，引擎在本地合成语音，输出 WAV，可直接试听、调语速、导出。</li>
+          <li>支持 <b>108 种语言</b>，全程<b>本地运行</b>，音频不出本机，适合对隐私敏感的场景。</li>
+        </ul>
+        <div class="tags"><span class="tag">音色克隆</span><span class="tag">108 语种</span><span class="tag g">本地运行</span><span class="tag">WAV 导出</span></div>
       </div>
     </div>
 

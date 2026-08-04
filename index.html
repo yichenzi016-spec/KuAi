@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KuAi V1.1.0 — AI 提示词管理 · 智能分镜 · 视频提示词工作台</title>
-<meta name="description" content="一站式管理提示词、AI 中英互译、生成即梦/可灵/Seedance 视频提示词、智能分镜与视觉灵感库。支持 15 大功能模块、13 家大模型，本地运行、数据不出本机。">
+<title>KuAi V1.1.0 — AI 提示词管理 · 智能分镜 · 视频提示词 · AI 声音克隆工作台</title>
+<meta name="description" content="一站式管理提示词、AI 中英互译、生成即梦/可灵/Seedance 视频提示词、智能分镜与视觉灵感库、AI 声音克隆配音。支持 16 大功能模块、13 家大模型，本地运行、数据不出本机。">
 <meta name="theme-color" content="#0e1726">
 <meta property="og:title" content="KuAi — 智能分镜 + 视频提示词一键生成">
-<meta property="og:description" content="一站式管理提示词、AI 中英互译、生成即梦/可灵/Seedance 视频提示词、智能分镜与视觉灵感库。支持 13 家大模型，本地运行。">
+<meta property="og:description" content="一站式管理提示词、AI 中英互译、生成即梦/可灵/Seedance 视频提示词、智能分镜与视觉灵感库、AI 声音克隆配音。支持 13 家大模型，本地运行。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://yichenzi016-spec.github.io/KuAi/">
 <meta name="twitter:card" content="summary_large_image">
@@ -44,6 +44,7 @@
       <div class="lead-item"><b>⭐ 视频提示词</b> — 将文案自动拆解为镜头级提示词，适配即梦·可灵·Seedance·Veo·Runway</div>
       <div class="lead-item"><b>🌐 全网采集</b> — 一键抓取全网参考素材与灵感，AI 反推提示词入库</div>
       <div class="lead-item"><b>🛠️ 辅助能力</b> — 提示词管理 · 中英互译润色 · 视觉灵感库 · 13 家大模型适配</div>
+      <div class="lead-item"><b>🎙️ AI 声音克隆</b> — 上传参考音频克隆音色，本地合成配音，支持 108 种语言</div>
       <div class="lead-note">数据本地存储，安全可控 · Windows 桌面应用 · 免费使用</div>
     </div>
     <div class="hero-cta">
@@ -80,6 +81,7 @@
       <div class="card"><div class="ico">🗂️</div><h3>提示词项目管理</h3><p>卡片 + 分组树形管理，拖拽排序、框选批量操作、搜索过滤，复用与检索一气呵成。</p></div>
       <div class="card"><div class="ico">🖼️</div><h3>视觉灵感库</h3><p>参考图按 9 大风格分类管理，AI 一键反推中英文提示词，虚拟滚动大图库流畅不卡。</p></div>
       <div class="card"><div class="ico">🌐</div><h3>全网采集</h3><p>一键抓取全网参考素材与灵感内容，自动清洗入库，AI 反推为可复用提示词。</p></div>
+      <div class="card card-featured"><div class="ico">🎙️</div><h3>🎙️ AI 声音克隆</h3><p>上传参考音频即可克隆音色，把文案念成配音；基于开源模型本地运行，支持 108 种语言，数据不出本机。</p></div>
     </div>
   </div>
 </section>
@@ -130,10 +132,11 @@
       <div class="dl-side">
         <h4>安装包包含</h4>
         <ul>
-          <li>主程序与全部 15 个功能模块</li>
+          <li>主程序与全部 16 个功能模块</li>
           <li>内置默认预设库（画质 / 镜头 / 运镜 / 风格）</li>
           <li>视觉灵感库 9 大分类模板</li>
           <li>分镜质量校验引擎</li>
+          <li>AI 声音克隆模块（本地引擎需另下，约 13.4GB）</li>
           <li>自动保存与崩溃恢复组件</li>
         </ul>
         <h4 style="margin-top:22px;">系统要求</h4>
@@ -173,8 +176,9 @@
     <div class="faq-item"><h4>必须联网才能用吗？</h4><p>不需要。提示词管理、分镜表格编辑、视觉灵感库浏览等本地功能离线可用；只有 AI 翻译 / 润色 / 提示词生成 / 图片分析需要联网与 API Key。</p></div>
     <div class="faq-item"><h4>我的提示词数据安全吗？</h4><p>所有项目数据保存在本机 JSON 文件（<code>软件配置数据(请勿删除).json</code>），不上传任何服务器。支持导出备份。</p></div>
     <div class="faq-item"><h4>支持哪些视频平台提示词？</h4><p>输出可对齐即梦、可灵、Seedance 2.0、Veo、Runway、Pika 等，提供多种输出格式与模型适配预设。</p></div>
-    <div class="faq-item"><h4>没有编程基础能上手吗？</h4><p>能。软件是图形界面操作，常用功能均有按钮与向导。详见<a href="guide.html">上手教程</a>。</p></div>
-  </div>
+      <div class="faq-item"><h4>没有编程基础能上手吗？</h4><p>能。软件是图形界面操作，常用功能均有按钮与向导。详见<a href="guide.html">上手教程</a>。</p></div>
+      <div class="faq-item"><h4>AI 声音克隆需要联网吗？占用多大空间？</h4><p>首次需下载本地引擎与模型（约 13.4GB）放入软件目录下 <code>tts_engine</code> 文件夹；之后<b>完全离线</b>运行，音频不出本机，合成在本地完成，不调用任何云端 API。</p></div>
+    </div>
 </section>
 
 <!-- 客户反馈 -->
