@@ -1,0 +1,9 @@
+# 本地发布工具配置（含可能的本地路径），绝不进公开仓库
+tools/publish_config.json
+
+# 系统/编辑器缓存
+.DS_Store
+Thumbs.db
+*~
+
+# 注意：version.json / downloads.json / index.html 等是网站内容，不要忽略
