@@ -1,7 +1,8 @@
 {
   "version": "1.0.1",
   "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.1/VideoPromptAssistant-Setup-1.0.1.exe",
-  "notes": "修复 AgnesAI 等 OpenAI 兼容服务「API 连接测试」误报 HTTP 401 的问题：连接测试改用标准 system+user 结构、英文测试提示、max_tokens=50 并附 User-Agent 头，避免被服务商校验层误判为异常/机器人请求而拒绝；同时保留连接测试强制直连，规避系统代理或安全软件拦截导致的误报。遇到「API 连接测试」报错的用户建议升级本版。",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.1/VideoPromptAssistant-Setup-1.0.1.exe",
+  "notes": "V1.0.1 更新说明\n\n· 检查更新（重要修复）\n  - 修复国内未开代理时「检查更新」连不上的问题：公告牌改为 Gitee 国内主用 + GitHub 兜底\n  - 安装包下载改为国内 Gitee 优先、海外 GitHub 兜底，下载更稳\n\n· 视频提示词\n  - 修复全面审核按钮点击崩溃的问题\n  - 全面审核按钮移至右侧输出区工具栏\n  - 审核窗口标题修正为「视频提示词 · 全面审核优化」\n\n· 体验优化\n  - 输入区清空按钮统一添加图标",
   "mandatory": false,
   "min_supported": "1.0.1"
 }
