@@ -1,6 +1,10 @@
 # 本地发布工具配置（含可能的本地路径），绝不进公开仓库
 tools/publish_config.json
 
+# Python 缓存（tools/ 下的脚本跑一次就会生成，不要进库）
+__pycache__/
+*.py[cod]
+
 # 系统/编辑器缓存
 .DS_Store
 Thumbs.db
