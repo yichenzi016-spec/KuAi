@@ -379,19 +379,58 @@ def update_version_json(website_dir: Path, version: str, url: str,
                     encoding="utf-8")
 
 
+# 本机 git 的 credential.helper=manager 会让 pull/push **静默失败**
+# ——退出码 128、stdout/stderr **全空**，日志里只留下一句空洞的「push 失败：」。
+# 2026-09-13 实测踩过：以为发布成功，实则远端一个字节没动。清空 helper + askpass 即恢复。
+_GIT_SAFE = ["-c", "credential.helper=", "-c", "core.askpass="]
+
+
+def _git(website_dir: Path, args, timeout: int = 300):
+    """跑 git 命令，返回 (rc, 合并输出)。按 UTF-8 解码字节，避免 GBK 控制台乱码。"""
+    try:
+        p = subprocess.run(["git"] + args, cwd=str(website_dir),
+                           capture_output=True, timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return -1, f"TIMEOUT >{timeout}s"
+    out = (p.stdout or b"").decode("utf-8", "replace")
+    err = (p.stderr or b"").decode("utf-8", "replace")
+    return p.returncode, (out + err).strip()
+
+
 def git_commit_push(website_dir: Path, version: str, log) -> None:
-    log("  · git add / commit / push …")
-    subprocess.run(["git", "pull", "--no-edit"], cwd=str(website_dir),
-                   check=False, capture_output=True)
-    subprocess.run(["git", "add", "version.json"], cwd=str(website_dir),
-                   check=False, capture_output=True)
-    subprocess.run(["git", "commit", "-m",
-                    f"发布 v{version}：更新 version.json"], cwd=str(website_dir),
-                   check=False, capture_output=True)
-    r = subprocess.run(["git", "push", "origin", "main"], cwd=str(website_dir),
-                       capture_output=True, text=True)
-    if r.returncode != 0:
-        log(f"  · ⚠️ push 失败：{r.stderr.strip()[-300:]}")
+    log("  · git add / commit / pull --rebase / push …")
+
+    # 1) 先提交本地改动，再 rebase 远端。
+    #    顺序不能反：若先 pull 后 commit，此刻 version.json 已是刚被重写过的**脏文件**，
+    #    `pull --rebase` 会因「cannot pull with rebase: You have unstaged changes」直接拒绝。
+    rc, out = _git(website_dir, ["add", "version.json"])
+    if rc != 0:
+        log(f"  · ⚠️ git add 失败：{out[-300:]}" if out
+            else f"  · ⚠️ git add 失败（退出码 {rc}，无任何输出）")
+        return
+
+    rc, out = _git(website_dir, ["commit", "-m", f"发布 v{version}：更新 version.json"])
+    if rc != 0 and "nothing to commit" not in out:
+        log(f"  · ⚠️ git commit 失败：{out[-300:]}" if out
+            else f"  · ⚠️ git commit 失败（退出码 {rc}，无任何输出）")
+        return
+
+    # 2) 与远端对齐。GitHub Action 机器人会并发提交 "chore: sync download count"，
+    #    不 rebase 会因 "fetch first" 被拒（2026-09-12 真实发生）。
+    rc, out = _git(website_dir, _GIT_SAFE + ["pull", "--rebase", "--no-edit"])
+    if rc != 0:
+        log(f"  · ⚠️ git pull --rebase 失败：{out[-300:]}" if out
+            else f"  · ⚠️ git pull --rebase 失败（退出码 {rc}，无任何输出）")
+
+    # 3) 推送
+    rc, out = _git(website_dir, _GIT_SAFE + ["push", "origin", "main"])
+    if rc != 0:
+        if not out:
+            log(f"  · ⚠️ push 失败（退出码 {rc}，且**无任何输出**）。"
+                "该特征通常是 credential.helper 拦截或网络/代理问题；"
+                "请在官网目录手动执行  git push origin main  查看真实原因。")
+        else:
+            log(f"  · ⚠️ push 失败：{out[-300:]}")
     else:
         log("  · push 成功")
 
