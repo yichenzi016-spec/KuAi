@@ -669,6 +669,144 @@ def git_commit_push(website_dir: Path, version: str, log,
 
 
 # ----------------------------------------------------------------------------
+# 官网推送兜底通道：GitHub REST API（2026-09-16 新增，修 H6）
+# ----------------------------------------------------------------------------
+# 背景（用户真实反馈）：安装包已经发了 1.0.2，官网页面却一直显示 1.0.1。
+# 根因是**网络策略只放行 api.github.com，拦截 github.com / codeload**
+# （git push 实测 502 Bad Gateway / Connection was reset）。而 github.com 是
+# GitHub Pages 的推送入口，于是「官网页面更新」这一步在受限网络下永远失败，
+# 线上页面就永远停在旧版本 —— 客户端能检测到更新，用户点官网下载却是旧包。
+#
+# 本函数用 GitHub **Git Data API**（blob → tree → commit → 更新 ref）完成同一次提交，
+# 全程只走 api.github.com（实测可达），作为 git push 失败后的兜底通道。
+#
+# 幂等且安全：
+#   · 先比对「本地文件 blob 摘要」与「远端树摘要」，只上传真正变化的文件；
+#   · tree 以远端当前树为 base_tree，因此**不会回退**机器人提交的 downloads.json；
+#   · 可安全重跑，第二次运行会直接判定「远端已是最新」。
+def _git_blob_sha(website_dir: Path, rel: str) -> str:
+    """本地文件的 git blob 摘要（与远端树里的 sha 同一算法，可直接比对）。"""
+    rc, out = _git(website_dir, ["hash-object", "--", rel])
+    return out.strip() if rc == 0 else ""
+
+
+def gh_api_push_website(website_dir: Path, token: str, owner: str, repo: str,
+                        version: str, log, allow_delete: bool = False) -> bool:
+    """走 api.github.com 把官网工作区内容提交到 main。返回是否成功。
+
+    allow_delete：是否允许删除「远端有、本地无」的文件。默认 False —— 本流程从不
+    主动下线站点文件，而一旦本地清单读不全（编码 / 忽略规则），误判成「待删」的代价
+    是不可逆的线上资源丢失（发布前实测：非 ASCII 路径会被误判，见下方 quotepath 修复）。
+    """
+    if not token:
+        log("  · ⚠️ [API] 无 GitHub 令牌，无法走 API 兜底推送")
+        return False
+    api = REPO_API.format(owner=owner, repo=repo)
+
+    # 1) 取远端 main 的当前提交与树（作为 base_tree）
+    st, ref = _api_call("GET", f"{api}/git/ref/heads/main", token)
+    if st != 200 or not isinstance(ref, dict):
+        log(f"  · ⚠️ [API] 读取远端 main 失败 (HTTP {st})：{str(ref)[:200]}")
+        return False
+    head_sha = str((ref.get("object") or {}).get("sha", "")).strip()
+    if not head_sha:
+        log("  · ⚠️ [API] 远端 main 缺少 sha")
+        return False
+    st, commit = _api_call("GET", f"{api}/git/commits/{head_sha}", token)
+    if st != 200 or not isinstance(commit, dict):
+        log(f"  · ⚠️ [API] 读取远端提交失败 (HTTP {st})")
+        return False
+    base_tree = str((commit.get("tree") or {}).get("sha", "")).strip()
+    remote: dict[str, str] = {}
+    st, tree = _api_call("GET", f"{api}/git/trees/{base_tree}?recursive=1", token)
+    if st == 200 and isinstance(tree, dict):
+        for e in tree.get("tree", []):
+            if isinstance(e, dict) and e.get("type") == "blob":
+                remote[str(e.get("path", ""))] = str(e.get("sha", ""))
+    else:
+        log(f"  · ⚠️ [API] 读取远端树失败 (HTTP {st})：{str(tree)[:150]}")
+
+    # 2) 本地文件清单（受 .gitignore 约束，避免把 __pycache__ 之类推上去）
+    # 【2026-09-16 修】必须关掉 core.quotepath：git 默认把非 ASCII 路径转义成八进制
+    # （assets/二维码.png → "assets/\347\242\274\347\240\201.png"），与远端树里的真实
+    # UTF-8 路径对不上 —— 既会把正常资源误判成「远端独有」而删除，也会把本地改动的
+    # 中文名文件以转义名推上去。发布前实测：不关会误删线上 assets/二维码.png。
+    rc, out = _git(website_dir, ["-c", "core.quotepath=false",
+                                 "ls-files", "--cached", "--others",
+                                 "--exclude-standard"])
+    if rc != 0:
+        log(f"  · ⚠️ [API] 枚举本地文件失败：{out[-200:]}")
+        return False
+    local_files = [ln.strip().replace("\\", "/")
+                   for ln in out.splitlines() if ln.strip()]
+    local_set = set(local_files)
+
+    to_upload: list[tuple[str, Path]] = []
+    for rel in local_files:
+        p = website_dir / rel
+        if not p.is_file():
+            continue
+        if _git_blob_sha(website_dir, rel) != remote.get(rel, ""):
+            to_upload.append((rel, p))
+    only_remote = sorted(r for r in remote if r not in local_set)
+    if only_remote and not allow_delete:
+        log(f"  · ⚠️ [API] 远端有本地不存在的文件 {len(only_remote)} 个，默认不删除"
+            f"（如需删除请显式开启 allow_delete）：{', '.join(only_remote[:5])}")
+    to_delete = only_remote if allow_delete else []
+
+    if not to_upload and not to_delete:
+        log("  · [API] 远端内容已是最新，无需推送")
+        return True
+    log(f"  · [API] 待推送 {len(to_upload)} 个文件"
+        + (f"，删除 {len(to_delete)} 个" if to_delete else "") + " …")
+
+    # 3) 逐文件建 blob
+    import base64
+    tree_entries: list[dict] = []
+    for rel, p in to_upload:
+        try:
+            content = base64.b64encode(p.read_bytes()).decode("ascii")
+        except OSError as e:
+            log(f"  · ⚠️ [API] 读取 {rel} 失败：{e}")
+            return False
+        st, blob = _api_call("POST", f"{api}/git/blobs", token,
+                             data={"content": content, "encoding": "base64"})
+        if st not in (200, 201) or not isinstance(blob, dict) or not blob.get("sha"):
+            log(f"  · ⚠️ [API] 创建 blob 失败 {rel} (HTTP {st})：{str(blob)[:200]}")
+            return False
+        tree_entries.append({"path": rel, "mode": "100644",
+                             "type": "blob", "sha": blob["sha"]})
+    for rel in to_delete:
+        # sha=None 表示删除该路径（远端有、本地已无）
+        tree_entries.append({"path": rel, "mode": "100644",
+                             "type": "blob", "sha": None})
+
+    # 4) 建 tree（以远端树为基，只覆盖变化项 —— 不回退机器人提交）
+    st, ntree = _api_call("POST", f"{api}/git/trees", token,
+                          data={"base_tree": base_tree, "tree": tree_entries})
+    if st not in (200, 201) or not isinstance(ntree, dict) or not ntree.get("sha"):
+        log(f"  · ⚠️ [API] 创建 tree 失败 (HTTP {st})：{str(ntree)[:200]}")
+        return False
+
+    # 5) 建提交（父提交 = 刚读到的远端 head，保证是快进）
+    st, ncommit = _api_call("POST", f"{api}/git/commits", token,
+                            data={"message": f"发布 v{version}：更新官网页面与 version.json",
+                                  "tree": ntree["sha"], "parents": [head_sha]})
+    if st not in (200, 201) or not isinstance(ncommit, dict) or not ncommit.get("sha"):
+        log(f"  · ⚠️ [API] 创建提交失败 (HTTP {st})：{str(ncommit)[:200]}")
+        return False
+
+    # 6) 更新 ref（force=False：非快进会失败，绝不强推覆盖）
+    st, upd = _api_call("PATCH", f"{api}/git/refs/heads/main", token,
+                        data={"sha": ncommit["sha"], "force": False})
+    if st not in (200, 201) or not isinstance(upd, dict):
+        log(f"  · ⚠️ [API] 更新 main 失败 (HTTP {st})：{str(upd)[:200]}")
+        return False
+    log(f"  · ✅ [API] 官网已推送（远端 commit {ncommit['sha'][:8]}）")
+    return True
+
+
+# ----------------------------------------------------------------------------
 # 主发布流程
 # ----------------------------------------------------------------------------
 def do_publish(token: str, owner: str, repo: str, website_dir: Path,
@@ -695,13 +833,25 @@ def do_publish(token: str, owner: str, repo: str, website_dir: Path,
         if not release_id:
             raise RuntimeError("Release 缺少 id")
         log(f"[2/5] GitHub 上传安装包 …")
-        gh_url = upload_asset(token, owner, repo, release_id, exe_path, log)
-        gh_uploaded = bool(gh_url)
+        # 【2026-09-16 修 H5】GitHub 资产上传失败必须**降级为警告**，不能中止整个发布。
+        # 实测本机网络策略只放行 api.github.com，**拦截 uploads.github.com**（HTTP 502）。
+        # 旧代码让 upload_asset 的 RuntimeError 直接冒泡到 do_publish 的兜底 except，
+        # 于是发布在「第 2 步」就 return False —— 连国内主源 Gitee 都不会执行，
+        # 国内用户（打不开 GitHub）等于拿不到新版本。GitHub 只是海外兜底镜像，
+        # 真正决定发布是否成立的是 Gitee 主源，因此这里改为可降级。
+        gh_uploaded = False
+        gh_url = ""
+        try:
+            gh_url = upload_asset(token, owner, repo, release_id, exe_path, log)
+            gh_uploaded = bool(gh_url)
+        except Exception as up_err:  # noqa: BLE001 —— 网络受限常见，非发布致命错
+            log(f"  · ⚠️ GitHub 上传失败（降级为非致命，主源 Gitee 不受影响）："
+                f"{str(up_err)[:200]}")
         if not gh_url:
             # 兜底：用约定 URL（GitHub Releases 下载地址规律）
             gh_url = (f"https://github.com/{owner}/{repo}/releases/"
                       f"download/{tag}/{urllib.parse.quote(exe_path.name)}")
-            log("  · ⚠️ GitHub 未返回下载地址，改用约定 URL 兜底（上传可能未成功）")
+            log("  · ⚠️ GitHub 兜底地址按约定 URL 生成（资产未上传，海外用户可走主源）")
 
         log(f"[3/5] Gitee 国内镜像：建 Release + 上传安装包 …")
         gitee_token = read_gitee_token()
@@ -732,19 +882,30 @@ def do_publish(token: str, owner: str, repo: str, website_dir: Path,
         sync_page_download_links(website_dir, version, log)
         log("[5/5] 推送官网仓库 …")
         website_pushed = git_commit_push(website_dir, version, log, token=token)
+        if not website_pushed:
+            # 【2026-09-16 修 H6】本机网络常拦截 github.com（git 通道 502/连接重置），
+            # 但 api.github.com 可达。git push 失败后自动改走 GitHub Git Data API，
+            # 否则官网页面会永远停在旧版本（用户真实反馈过这个现象）。
+            log("  · git 通道不可用（本机网络常拦截 github.com），改走 GitHub API 兜底推送 …")
+            website_pushed = gh_api_push_website(
+                website_dir, token, owner, repo, version, log)
 
-        all_ok = bool(gitee_url) and gh_uploaded and website_pushed
+        # 【2026-09-16 修 H5】发布是否成立，取决于「国内主源 Gitee 可用」+「官网已同步」。
+        # GitHub 是海外兜底镜像，其上传受本机网络策略影响（uploads.github.com 常被拦），
+        # 不应作为否定整个发布的条件；但仍如实打印，绝不掩盖。
+        all_ok = bool(gitee_url) and website_pushed
         if all_ok:
             log("✅ 发布完成！软件内「检查更新」稍后即可检测到 v" + version)
         else:
             log("⚠️ 发布流程已执行，但**并非全部成功**，请逐项确认：")
             if not gitee_url:
                 log("   · Gitee 国内主源未上传（降级为仅 GitHub）")
-            if not gh_uploaded:
-                log("   · GitHub 兜底源上传未确认")
             if not website_pushed:
                 log("   · 官网仓库未推送（GitHub Pages 上的 version.json 可能陈旧；"
                     "客户端主读 Gitee，通常不影响更新检测）")
+        if not gh_uploaded:
+            log("   ⚠️ GitHub 兜底源未上传安装包（本机到 uploads.github.com 的通道受限）；"
+                "国内主源 Gitee 不受影响，海外用户可另外获取。")
         log("   国内下载（主用）：" + primary_url)
         log("   海外下载（兜底）：" + gh_url)
         log(f"   安装包 SHA256：{sha256}")

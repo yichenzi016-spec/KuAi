@@ -325,6 +325,191 @@ ok(pu.compute_sha256(_sha_file).lower() == _hl.sha256(b"hello").hexdigest(),
    "E8 compute_sha256 与标准库结果一致")
 shutil.rmtree(_sha_dir, ignore_errors=True)
 
+# ------------------------------------------------- 受限网络下的发布可用性（2026-09-16）
+# 背景（用户真实反馈）：安装包已发 1.0.2，官网页面却一直是 1.0.1。实测本机网络
+# 策略只放行 api.github.com，**拦截 github.com / uploads.github.com**：
+#   H5 GitHub 资产上传失败会冒泡中止整个发布 → 连国内主源 Gitee 都不执行；
+#   H6 git push（github.com）不可达 → 官网页面永远停在旧版本。
+print("F. 受限网络下的发布可用性（H5 降级 / H6 API 兜底）")
+
+ok(hasattr(pu, "gh_api_push_website"),
+   "F1 定义了 gh_api_push_website（git 通道失败后的 API 兜底）")
+ok(hasattr(pu, "_git_blob_sha"),
+   "F1b 定义了 _git_blob_sha（本地 blob 摘要，用于与远端树比对）")
+
+_gh_src = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "gh_api_push_website":
+        _gh_src = ast.unparse(_n)
+ok(_gh_src is not None, "F2 找到 gh_api_push_website 函数体")
+if _gh_src:
+    ok("base_tree" in _gh_src,
+       "F2b 以远端树为 base_tree（不回退机器人提交的 downloads.json）")
+    ok('"force": False' in _gh_src or "'force': False" in _gh_src,
+       "F2c 更新 ref 用 force=False（绝不强推覆盖）")
+    ok("git/ref/heads/main" in _gh_src, "F2d 以远端 main 当前提交为父提交")
+
+_dp_src2 = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "do_publish":
+        _dp_src2 = ast.unparse(_n)
+ok(_dp_src2 is not None, "F3 找到 do_publish（复核）")
+if _dp_src2:
+    ok("upload_asset" in _dp_src2, "F3b do_publish 仍调用 upload_asset")
+    ok("降级为非致命" in _dp_src2,
+       "F3c GitHub 上传失败显式降级为非致命（H5：不再中止整个发布）")
+    ok("gh_api_push_website" in _dp_src2,
+       "F3d git push 失败后调用 API 兜底推送（H6）")
+    ok("all_ok" in _dp_src2 and "gh_uploaded and website_pushed" not in _dp_src2,
+       "F3e all_ok 不再把 GitHub 镜像列为必要条件（H5）")
+
+# F4 功能验证：用「内存假 GitHub」真实跑通 API 推送，并验证幂等与不覆盖机器人提交
+import hashlib as _hl2  # noqa: E402
+
+
+def _blob_sha_of(data: bytes) -> str:
+    """git blob 摘要（sha1 前缀头），与 git hash-object 完全一致。"""
+    _h = _hl2.sha1()
+    _h.update(b"blob %d\x00" % len(data))
+    _h.update(data)
+    return _h.hexdigest()
+
+
+_fd = tempfile.mkdtemp(prefix="pub_ghapi_")
+tmpdirs.append(_fd)
+_fdp = Path(_fd)
+
+
+def _w(rel: str, text: str) -> None:
+    """按字节写入（不用 write_text：Windows 会把 \\n 改写成 \\r\\n，摘要就对不上了）。"""
+    (_fdp / rel).write_bytes(text.encode("utf-8"))
+
+
+_w("version.json", '{"version": "1.0.2"}\n')
+_w("downloads.json", '{"n": 2}\n')
+_w("index.html", "<title>V1.0.2</title>\n")
+
+_fake = {
+    "head": "HEAD0",
+    "tree": "TREE0",
+    "remote": {
+        "version.json": _blob_sha_of(b'{"version": "1.0.1"}\n'),   # 不同 → 需上传
+        "downloads.json": _blob_sha_of(b'{"n": 2}\n'),             # 相同 → 应跳过
+        "index.html": _blob_sha_of(b"<title>V1.0.1</title>\n"),     # 不同 → 需上传
+    },
+    "blobs": [], "trees": [], "commits": [], "refs": [],
+}
+
+_orig_api, _orig_git = pu._api_call, pu._git
+
+
+def _fake_api(method, url, token, data=None, raw_bytes=None,
+              content_type="application/json"):
+    if method == "GET" and "git/ref/heads/main" in url:
+        return 200, {"object": {"sha": _fake["head"]}}
+    if method == "GET" and "/git/commits/" in url:
+        return 200, {"tree": {"sha": _fake["tree"]}}
+    if method == "GET" and "/git/trees/" in url:
+        return 200, {"tree": [{"path": p, "type": "blob", "sha": s}
+                              for p, s in _fake["remote"].items()]}
+    if method == "POST" and url.endswith("/git/blobs"):
+        _fake["blobs"].append(data)
+        return 201, {"sha": "BLOB%d" % len(_fake["blobs"])}
+    if method == "POST" and url.endswith("/git/trees"):
+        _fake["trees"].append(data)
+        return 201, {"sha": "TREE1"}
+    if method == "POST" and url.endswith("/git/commits"):
+        _fake["commits"].append(data)
+        return 201, {"sha": "COMMIT1"}
+    if method == "PATCH" and url.endswith("/git/refs/heads/main"):
+        _fake["refs"].append(data)
+        _fake["head"] = data.get("sha")
+        return 200, {"object": {"sha": data.get("sha")}}
+    return 404, {"message": "unhandled " + url}
+
+
+def _fake_git(website_dir, args, timeout=300, env=None):
+    if "hash-object" in args:
+        try:
+            return 0, _blob_sha_of((Path(website_dir) / args[-1]).read_bytes())
+        except OSError:
+            return 1, ""
+    if "ls-files" in args:
+        names = sorted(p.name for p in Path(website_dir).iterdir() if p.is_file())
+        return 0, "\n".join(names) + "\n"
+    return 1, ""
+
+
+pu._api_call, pu._git = _fake_api, _fake_git
+try:
+    _l1: list[str] = []
+    _r1 = pu.gh_api_push_website(Path(_fd), "TOK", "o", "r", "1.0.3", _l1.append)
+    ok(_r1 is True, "F4 API 兜底推送返回成功")
+    ok(len(_fake["blobs"]) == 2,
+       f"F4b 只为真正变化的文件建 blob（实际 {len(_fake['blobs'])} 个；"
+       "downloads.json 与本地一致应被跳过）")
+    ok(len(_fake["trees"]) == 1 and _fake["trees"][0].get("base_tree") == "TREE0",
+       "F4c tree 以远端树为 base_tree（机器人提交不会被回退）")
+    ok(len(_fake["commits"]) == 1 and _fake["commits"][0].get("parents") == ["HEAD0"],
+       "F4d 提交父节点为远端 head（构成快进，可被服务端接受）")
+    ok(len(_fake["refs"]) == 1 and _fake["refs"][0].get("force") is False,
+       "F4e 更新 ref 使用 force=False（不强推）")
+
+    # 幂等：把远端树更新为本地现状后重跑 → 判定「已是最新」，不产生任何写操作
+    _fake["remote"] = {
+        "version.json": _blob_sha_of((_fdp / "version.json").read_bytes()),
+        "downloads.json": _blob_sha_of((_fdp / "downloads.json").read_bytes()),
+        "index.html": _blob_sha_of((_fdp / "index.html").read_bytes()),
+    }
+    for _k in ("blobs", "trees", "commits", "refs"):
+        _fake[_k].clear()
+    _l2: list[str] = []
+    _r2 = pu.gh_api_push_website(Path(_fd), "TOK", "o", "r", "1.0.3", _l2.append)
+    ok(_r2 is True, "F4f 内容已同步时仍返回成功")
+    ok(not _fake["blobs"] and not _fake["commits"] and not _fake["refs"],
+       "F4g 幂等：无变化时不建 blob / 不建提交 / 不动 ref（可安全重跑）")
+
+    # F5：远端独有文件默认不删（防误删线上资源）+ 非 ASCII 路径不被转义
+    _fake["remote"] = {
+        "version.json": _blob_sha_of((_fdp / "version.json").read_bytes()),
+        "downloads.json": _blob_sha_of((_fdp / "downloads.json").read_bytes()),
+        "index.html": _blob_sha_of((_fdp / "index.html").read_bytes()),
+        "assets/二维码.png": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+    }
+    for _k in ("blobs", "trees", "commits", "refs"):
+        _fake[_k].clear()
+    _l3: list[str] = []
+    _r3 = pu.gh_api_push_website(Path(_fd), "TOK", "o", "r", "1.0.3", _l3.append)
+    ok(_r3 is True, "F5 存在远端独有文件时仍成功返回")
+    ok(not _fake["blobs"] and not _fake["commits"] and not _fake["refs"],
+       "F5b 默认不删除远端独有文件（不产生任何写操作，避免误删线上资源）")
+    ok(any("默认不删除" in str(_x) for _x in _l3),
+       "F5c 对远端独有文件给出明确告警（不静默）")
+finally:
+    pu._api_call, pu._git = _orig_api, _orig_git
+    shutil.rmtree(_fd, ignore_errors=True)
+
+# F6：git 路径转义必须关闭，否则非 ASCII 文件名会被误判（发布前实测会误删二维码.png）
+ok('"core.quotepath=false"' in SRC or "'core.quotepath=false'" in SRC,
+   "F6 枚举文件时关闭 core.quotepath（非 ASCII 路径不被八进制转义）")
+_gh_src2 = None
+_gh_fn2 = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "gh_api_push_website":
+        _gh_src2 = ast.unparse(_n)
+        _gh_fn2 = _n
+# 直接读 AST 参数节点判断默认值（不依赖 ast.unparse 对注解/默认值的空格格式）
+_adef = None
+if _gh_fn2 is not None:
+    _a = _gh_fn2.args
+    for _arg, _dflt in zip(_a.args[len(_a.args) - len(_a.defaults):], _a.defaults):
+        if _arg.arg == "allow_delete":
+            _adef = _dflt
+ok(isinstance(_adef, ast.Constant) and _adef.value is False,
+   "F6b 删除远端文件需显式开启 allow_delete（默认 False）")
+ok(_gh_src2 is not None and "only_remote" in _gh_src2,
+   "F6c 远端独有文件单独收集并告警，不与待上传项混淆")
+
 print(f"\n===== {checks - len(fails)}/{checks} 通过 =====")
 if fails:
     print("失败项：")

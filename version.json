@@ -1,10 +1,10 @@
 {
-  "version": "1.0.2",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.2/VideoPromptAssistant-Setup-1.0.2.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.2/VideoPromptAssistant-Setup-1.0.2.exe",
-  "notes": "修复 AI 配音（声音克隆）的几个问题：\n- 修复 M4A 等部分音频格式无法自动识别文字的问题\n- 修复用 M4A 等格式作为参考音色时，无法生成配音的问题\n- 修复识别失败后参考文字被错误记录，导致该音色之后一直识别不出来的问题\n- 识别失败时现在会显示具体原因，方便反馈问题",
+  "version": "1.0.3",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.3/VideoPromptAssistant-Setup-1.0.3.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.3/VideoPromptAssistant-Setup-1.0.3.exe",
+  "notes": "V1.0.3 更新说明\n\n· 更新与下载\n  - 修复「检查更新」时看不到下载进度的问题\n  - 修复升级时下载进度窗口不显示的问题\n  - 新增：启动后自动检测新版本，发现新版本会弹窗提醒，可一键更新，也可以选择不再提示\n\n· 稳定性\n  - 修复反复最小化窗口时误弹「程序异常」的问题\n  - 修复等待翻译或润色时关闭编辑窗口后弹出报错的问题\n  - 修复关闭接口设置窗口后弹出报错的问题\n\n· 体验优化\n  - 翻译、润色、识别变量等待中，按钮会显示已等待秒数，不再让人以为卡住\n  - 修复连接测试误报「网络连接失败」的问题\n  - 修复软件最小化并固定到任务栏后，点击任务栏图标打不开的问题\n  - 「关于」窗口的更新频道改为国内下载地址",
   "mandatory": false,
-  "sha256": "3B43CABC5687F4F9D3AE996675D0832EDCD5148DCDA0B3DBF881D6C6C04992FE",
-  "size": 34817123,
+  "sha256": "E9D65F5D65821743F54D13F69556906AD4F38FB6C6474179A2BCE5EE08EED59F",
+  "size": 34850567,
   "min_supported": "1.0.1"
 }
