@@ -78,12 +78,12 @@ for node in ast.walk(TREE):
     if isinstance(node, ast.FunctionDef) and node.name == "update_version_json":
         uv_fn = node
 ok(uv_fn is not None, "A4 找到 update_version_json 函数")
-has_star_star = False
-if uv_fn is not None:
-    for sub in ast.walk(uv_fn):
-        if isinstance(sub, ast.Dict) and any(k is None for k in sub.keys):
-            has_star_star = True  # {**extra}
-ok(has_star_star, "A5 update_version_json 里有 {**extra} 合并（保留额外字段）")
+# 2026-09-15 修 M2：额外字段合并从 `{**extra}` 改为 `payload.update(extra)`，
+# 并把 sha256 / min_supported 也纳入「受管字段」，保证本地与 Gitee 双端 payload 一致。
+_uv_src = ast.unparse(uv_fn) if uv_fn is not None else ""
+ok("payload.update(extra)" in _uv_src, "A5 update_version_json 合并额外字段（保留自定义扩展键）")
+ok("_MANAGED_VERSION_KEYS" in SRC, "A5b 存在受管字段白名单 _MANAGED_VERSION_KEYS")
+ok("_serialize_version_json" in SRC, "A5c 本地写盘与 Gitee 推送共用同一序列化函数")
 
 # ---------------------------------------------------------------- B 功能验证
 print("B. update_version_json 功能验证")
@@ -230,6 +230,100 @@ if _git:
 
     shutil.rmtree(_root, ignore_errors=True)
     print("  （已清理 D 段临时 git 仓库）")
+
+# ------------------------------------------------- 发布链路缺陷修复（2026-09-15）
+# 背景：一次完整发布链路审计发现 publish_update.py 有 4 个真实缺陷：
+#   H1 Gitee（国内主源）上传失败只打警告、回退 GitHub 地址，却仍打印「发布完成」；
+#   H2 Gitee 旧附件删除丢弃返回值、无条件打印「已删除」→ 同名附件追加造成重复；
+#   M1 重发同版本号时命中已存在 Release 就直接复用、不刷新说明 → 页面说明永久陈旧；
+#   M2 Gitee 侧 min_supported 硬写新版本号、本地侧保留旧值 → 双端字段分叉；
+#   L7 PAT 通过 `-c url."https://<token>@github.com/".insteadOf=...` 进命令行 →
+#      同用户任意进程可从进程列表读到令牌。
+print("E. 发布链路缺陷修复（H1/H2/M1/M2/L7）")
+
+ok(hasattr(pu, "GiteePublishError"), "E1 定义了 GiteePublishError（主源失败显式抛出）")
+ok(issubclass(getattr(pu, "GiteePublishError", Exception), RuntimeError),
+   "E1b GiteePublishError 是 RuntimeError 子类")
+
+_gu_src = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "gitee_upload_asset":
+        _gu_src = ast.unparse(_n)
+ok(_gu_src is not None, "E2 找到 gitee_upload_asset")
+if _gu_src:
+    ok("raise GiteePublishError" in _gu_src,
+       "E2b 上传/删附件失败一律 raise（H1/H2：不再静默 return 空串）")
+    ok("GiteePublishError" in _gu_src and "删除旧附件失败" in _gu_src,
+       "E2c 旧附件删除失败会中止（H2）")
+    ok("仍存在于 Gitee Release" in _gu_src,
+       "E2d 删除后复核同名附件确实消失（H2）")
+
+_ger_src = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "gitee_ensure_release":
+        _ger_src = ast.unparse(_n)
+ok(_ger_src is not None and "PATCH" in _ger_src,
+   "E3 gitee_ensure_release 对已存在 Release 执行 PATCH 刷新说明（M1）")
+# 【2026-09-15 实测踩坑】Gitee 的 PATCH /releases/{id} 强制要求 tag_name，
+# 少了它直接 400 {"messages":["tag_name is missing"]} —— 说明永远刷不新。
+ok(_ger_src is not None and "tag_name" in _ger_src.split("PATCH", 1)[-1][:400],
+   "E3c Gitee PATCH 载荷含 tag_name（否则 Gitee 返回 400，说明刷不新）")
+
+_cr_src = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "create_release":
+        _cr_src = ast.unparse(_n)
+ok(_cr_src is not None and "PATCH" in _cr_src,
+   "E3b create_release（GitHub）对已存在 Release 执行 PATCH（M1）")
+
+_dp_src = None
+for _n in ast.walk(TREE):
+    if isinstance(_n, ast.FunctionDef) and _n.name == "do_publish":
+        _dp_src = ast.unparse(_n)
+ok(_dp_src is not None, "E4 找到 do_publish")
+if _dp_src:
+    ok("GiteePublishError" in _dp_src,
+       "E4b do_publish 捕获 GiteePublishError 并中止（H1）")
+    ok("gitee_push_version_json(gitee_token, payload" in _dp_src,
+       "E4c 本地与 Gitee 复用同一份 payload（M2，双端不可能分叉）")
+    ok("sha256=sha256" in _dp_src and "compute_sha256" in _dp_src,
+       "E4d 安装包 SHA256 写入 version.json（M5）")
+    ok("all_ok" in _dp_src,
+       "E4e 只有全部成功才打印「✅ 发布完成」")
+
+ok('"min_supported": version' not in SRC
+   and "'min_supported': version" not in SRC,
+   "E4f Gitee 侧不再把 min_supported 硬写成当前版本号（M2 根因已消除）")
+
+ok(hasattr(pu, "compute_sha256"), "E5 存在 compute_sha256 辅助函数")
+
+# E6：令牌不再出现在命令行 —— 源码里不得再有把 token 拼进 -c 的写法
+ok('-c", f\'url."https://{token}@github.com/' not in SRC,
+   "E6 令牌不再拼进 git 命令行（L7）")
+ok(not hasattr(pu, "_git_safe_with_token"),
+   "E6b 旧的 _git_safe_with_token 已移除")
+ok(hasattr(pu, "_git_config_env"),
+   "E6c 改用环境变量注入（GIT_CONFIG_COUNT/KEY/VALUE）")
+
+# E7：真实 git 读取环境注入的配置（证明注入确实生效，而非只写在代码里）
+if _git:
+    _env = pu._git_config_env("FAKE_TOKEN_ABC123")
+    _r = subprocess.run(
+        [_git, "config", "--get", "url.https://FAKE_TOKEN_ABC123@github.com/.insteadOf"],
+        env=_env, capture_output=True)
+    _out = (_r.stdout or b"").decode("utf-8", "replace").strip()
+    ok(_out == "https://github.com/",
+       "E7 git 能读到经环境变量注入的 insteadOf 配置（真实生效）")
+
+# E8：compute_sha256 正确性
+_sha_dir = tempfile.mkdtemp(prefix="pub_sha_")
+tmpdirs.append(_sha_dir)
+_sha_file = Path(_sha_dir) / "a.bin"
+_sha_file.write_bytes(b"hello")
+import hashlib as _hl  # noqa: E402
+ok(pu.compute_sha256(_sha_file).lower() == _hl.sha256(b"hello").hexdigest(),
+   "E8 compute_sha256 与标准库结果一致")
+shutil.rmtree(_sha_dir, ignore_errors=True)
 
 print(f"\n===== {checks - len(fails)}/{checks} 通过 =====")
 if fails:
