@@ -457,6 +457,24 @@ def _serialize_version_json(payload: dict) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
 
 
+def _atomic_write_text(path: Path, text: str) -> None:
+    """原子写文本：先写同目录临时文件，再 os.replace 覆盖目标。
+
+    【2026-09-29 修】本机实测 version.json 被某个后台进程以
+    「FILE_SHARE_READ|FILE_SHARE_DELETE 但不含 FILE_SHARE_WRITE」打开（微软 Defender /
+    索引器 / 编辑器预览等常见），此时直接 `path.write_text()` 会抛
+    `PermissionError [Errno 13]`（读得到、删得掉、就是写不进去），发布流程会在第 4 步中止。
+    改为「临时文件 + os.replace」后，因为目标文件的**删除/替换**权限仍在，可稳定绕过该锁，
+    同时顺带获得「写一半崩了不会留半个 JSON」的原子性。
+    """
+    tmp = path.with_name(path.name + ".tmp")
+    with open(tmp, "w", encoding="utf-8", newline="") as fh:
+        fh.write(text)
+        fh.flush()
+        os.fsync(fh.fileno())
+    os.replace(tmp, path)
+
+
 def update_version_json(website_dir: Path, version: str, url: str,
                         notes: str, mandatory: bool, url_mirror: str = "",
                         sha256: str = "", min_supported: str = "",
@@ -500,7 +518,7 @@ def update_version_json(website_dir: Path, version: str, url: str,
     if min_supported:
         payload["min_supported"] = min_supported
     payload.update(extra)
-    path.write_text(_serialize_version_json(payload), encoding="utf-8")
+    _atomic_write_text(path, _serialize_version_json(payload))
     return payload
 
 
@@ -552,7 +570,7 @@ def sync_page_download_links(website_dir: Path, version: str, log) -> int:
             lambda m: m.group(1) + _VER_IN_TEXT_RE.sub(f"V{version}", m.group(2)) + m.group(3),
             new)
         if new != html:
-            page.write_text(new, encoding="utf-8")
+            _atomic_write_text(page, new)
             changed += 1
             log(f"  · {name} 下载地址/版本号已同步为 V{version}")
     return changed

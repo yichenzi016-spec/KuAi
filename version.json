@@ -1,10 +1,10 @@
 {
-  "version": "1.0.6",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.6/VideoPromptAssistant-Setup-1.0.6.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.6/VideoPromptAssistant-Setup-1.0.6.exe",
-  "notes": "V1.0.6 更新说明\n\n· 智能分镜 · 流畅度\n  - 生成分镜后再看表格，不再出现卡住几秒、滚动掉帧的情况\n  - 拖动窗口大小、最大化、还原时，分镜表格立刻跟着铺满，不再等好几秒才显示\n  - 表格里连续输入文字时更加跟手，不再一敲一个卡\n  - 输入区自动撑高更顺滑，不再出现反复抖动\n\n· 智能分镜 · 稳定性\n  - 修复刷新分镜表格时偶发报错导致表格显示空白的问题\n  - 修复打开自动保存的历史分镜后，镜号对不上的问题",
+  "version": "1.0.7",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.7/VideoPromptAssistant-Setup-1.0.7.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.7/VideoPromptAssistant-Setup-1.0.7.exe",
+  "notes": "V1.0.7 更新说明\n\n· 修复\n  - 修复缺少 ffmpeg 时「一键安装」失败的问题，现在点一下就会自动装好\n  - 修复部分用户解压好引擎后，软件仍提示「未安装」的问题\n  - 修复引擎目录异常时「声音克隆」页面打不开的问题\n  - 修复引擎文件解压不完整时，被误判为「已安装」的问题\n  - 修复「打开文件夹」会先建出一个空文件夹的问题\n  - 点击「重新检测」后会显示本次检测的时间，方便确认是否已执行\n\n· 优化\n  - 引擎安装引导写清了解压后文件夹该放在哪一层，照着放即可",
   "mandatory": false,
-  "sha256": "36FA2F0D3CE345C9AE55116030A143FA894386C0E4B596D8429A2A3138DDF823",
-  "size": 35119083,
+  "sha256": "8B793EEBDFF2F6B65D554347AE5A93D5D7F104E89054037ABD243A4699CCAC5F",
+  "size": 35139031,
   "min_supported": "1.0.1"
 }
