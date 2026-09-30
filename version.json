@@ -1,10 +1,10 @@
 {
-  "version": "1.0.7",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.7/VideoPromptAssistant-Setup-1.0.7.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.7/VideoPromptAssistant-Setup-1.0.7.exe",
-  "notes": "V1.0.7 更新说明\n\n· 修复\n  - 修复缺少 ffmpeg 时「一键安装」失败的问题，现在点一下就会自动装好\n  - 修复部分用户解压好引擎后，软件仍提示「未安装」的问题\n  - 修复引擎目录异常时「声音克隆」页面打不开的问题\n  - 修复引擎文件解压不完整时，被误判为「已安装」的问题\n  - 修复「打开文件夹」会先建出一个空文件夹的问题\n  - 点击「重新检测」后会显示本次检测的时间，方便确认是否已执行\n\n· 优化\n  - 引擎安装引导写清了解压后文件夹该放在哪一层，照着放即可",
+  "version": "1.0.8",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.8/VideoPromptAssistant-Setup-1.0.8.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.8/VideoPromptAssistant-Setup-1.0.8.exe",
+  "notes": "V1.0.8 更新说明\n\n· 新增\n  - 声音克隆新增「生成后自动保存到本机」开关，可自行选择生成结果是否直接存入本机文件夹\n  - 关掉开关后，生成结果只放临时区，挑好了再手动保存，本机文件夹不再堆积未选中的文件",
   "mandatory": false,
-  "sha256": "8B793EEBDFF2F6B65D554347AE5A93D5D7F104E89054037ABD243A4699CCAC5F",
-  "size": 35139031,
+  "sha256": "013DEFBA2A67C22A89BEC27AACAEF7C568D0C99A2686EF4BAE7DEECD9F9A247A",
+  "size": 35155841,
   "min_supported": "1.0.1"
 }

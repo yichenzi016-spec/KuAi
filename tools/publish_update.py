@@ -40,6 +40,7 @@ import hashlib
 import json
 import os
 import re
+import shutil
 import ssl
 import subprocess
 import sys
@@ -275,11 +276,21 @@ def read_gitee_token() -> str:
         return ""
 
 
-def _gitee_req(method: str, path: str, token: str,
-               data: dict | None = None,
-               raw_bytes: bytes | None = None,
-               content_type: str = "application/json",
-               timeout: int = 60):
+# 【2026-09-30 修】curl 可执行文件（Gitee API 必须走 curl，原因见 _gitee_req）。
+_CURL = shutil.which("curl")
+
+
+def _gitee_req_urllib(method: str, path: str, token: str,
+                      data: dict | None = None,
+                      raw_bytes: bytes | None = None,
+                      content_type: str = "application/json",
+                      timeout: int = 60):
+    """旧实现（urllib），保留为「本机没有 curl」时的兜底。
+
+    ⚠ 在装有 Gitee 前置 Baidu WAF 的网络里，urllib 的客户端指纹会被判为风险
+    客户端，导致 `/api/v5/repos/**` 一律 HTML 403（`/api/v5/user` 是白名单，照
+    样 200，极容易误判成「令牌失效」）。只有 curl 能稳定通过。详见 _gitee_req。
+    """
     url = GITEE_API + path + (f"?access_token={token}" if "?" not in path else f"&access_token={token}")
     body = None
     headers = {"Accept": "application/json"}
@@ -301,6 +312,70 @@ def _gitee_req(method: str, path: str, token: str,
         return e.code, e.read().decode("utf-8", errors="replace")
     except Exception as e:
         return -1, str(e)
+
+
+def _gitee_req(method: str, path: str, token: str,
+               data: dict | None = None,
+               raw_bytes: bytes | None = None,
+               content_type: str = "application/json",
+               timeout: int = 60):
+    """Gitee API 请求（**走 curl**）。
+
+    【2026-09-30 修】改用 curl 发请求（原来用 urllib）。
+    现象：本机 urllib 访问 `https://gitee.com/api/v5/repos/**` 一律收到
+      HTTP 403 + 一张 Baidu WAF 拦截页（可见文案：「对不起，由于您的访问存在
+      安全风险，已经被拦截，错误状态码：403」），而 `/api/v5/user` 却是 200，
+      于是很容易被误判成「令牌失效 / 权限不足 / 仓库转私有」。
+    取证（2026-09-30，同一台机器、同一个令牌、同一条网络）：
+      · urllib：直连 / 经 127.0.0.1:2213 / 经 127.0.0.1:1080 —— 全部 403（WAF HTML）
+      · curl  ：直连 / 经 127.0.0.1:2213 / 经 127.0.0.1:1080 —— 全部 200（正常 JSON）
+      · 换成浏览器 UA、补全 sec-ch-ua/Sec-Fetch-* 等请求头、带 cookie —— 仍 403
+      · 换一个完全无关的公开仓库（oschina/git-osc、mindspore/mindspore）—— 同样 403
+      结论：不是令牌、不是代理、不是权限，而是 **TLS/客户端指纹**——WAF 认 curl、
+      不认 urllib。故此处改用 curl（stdout 末尾用 `-w` 打状态码，body 与状态码
+      用标记行分隔，保持与旧实现相同的 `(status, payload)` 返回契约）。
+    没有 curl 时自动回退旧 urllib 实现（`_gitee_req_urllib`），保证工具不会因此报错。
+    """
+    if _CURL is None:
+        return _gitee_req_urllib(method, path, token, data=data,
+                                 raw_bytes=raw_bytes,
+                                 content_type=content_type, timeout=timeout)
+    url = GITEE_API + path + (f"?access_token={token}" if "?" not in path else f"&access_token={token}")
+    marker = "\n__KUAI_HTTP__"
+    cmd = [_CURL, "-sS", "-X", method,
+           "--max-time", str(timeout),
+           "-H", "Accept: application/json",
+           "-w", marker + "%{http_code}"]
+    body: bytes | None = None
+    if raw_bytes is not None:
+        body = raw_bytes
+        cmd += ["-H", f"Content-Type: {content_type}", "--data-binary", "@-"]
+    elif data is not None:
+        body = json.dumps(data, ensure_ascii=False).encode("utf-8")
+        cmd += ["-H", "Content-Type: application/json", "--data-binary", "@-"]
+    cmd.append(url)
+    try:
+        proc = subprocess.run(cmd, input=body, stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE, timeout=timeout + 90)
+    except Exception as e:
+        return -1, str(e)
+    out = proc.stdout.decode("utf-8", errors="replace")
+    idx = out.rfind(marker)
+    if idx < 0:
+        err = proc.stderr.decode("utf-8", errors="replace")[:300]
+        return -1, f"curl 未返回状态码：{err or out[:300]}"
+    try:
+        status = int(out[idx + len(marker):].strip())
+    except Exception:
+        status = -1
+    payload = out[:idx]
+    stripped = payload.lstrip()
+    if stripped.startswith("{") or stripped.startswith("["):
+        try:
+            return status, json.loads(payload)
+        except Exception:
+            return status, payload
+    return status, payload
 
 
 def gitee_ensure_release(token: str, tag: str, name: str, body: str) -> dict:
