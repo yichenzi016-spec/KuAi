@@ -1,10 +1,10 @@
 {
-  "version": "1.0.9",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.9/VideoPromptAssistant-Setup-1.0.9.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.9/VideoPromptAssistant-Setup-1.0.9.exe",
-  "notes": "V1.0.9 更新说明\r\n\r\n· 修复\r\n  - 修复部分电脑上截图、快速采集快捷键突然失效，必须重启软件才能恢复的问题\r\n  - 修复没有预设音色时，声音克隆检测不通过、无法使用的问题\r\n\r\n· 优化\r\n  - 安装软件时会自动建好存放克隆模型的文件夹，下载好模型直接放进去即可使用\r\n  - 声音克隆的音色文件改存到「KuAi视频助手数据」文件夹下的 voices 里，查找和备份更方便",
+  "version": "1.0.10",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.10/VideoPromptAssistant-Setup-1.0.10.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.10/VideoPromptAssistant-Setup-1.0.10.exe",
+  "notes": "V1.0.10 更新说明\r\n\r\n· 修复\r\n  - 修复翻译时把要翻译的内容当成指令执行的问题，现在只输出译文，不再多出解释或乱执行\r\n\r\n· 优化\r\n  - 左侧「工作区」改名为「提示词管理」，名称更贴合实际用途",
   "mandatory": false,
-  "sha256": "430DD9959436D5E5F12380E71E4AAD0335FAC3B32425F33D2A9779100CD7FB60",
-  "size": 35208963,
+  "sha256": "816BE3233086A2E100F7ED43266FBB0A49C1B7B0DDE4D85F63808A15909BF2B1",
+  "size": 35210346,
   "min_supported": "1.0.1"
 }
