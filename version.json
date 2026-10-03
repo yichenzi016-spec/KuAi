@@ -1,10 +1,10 @@
 {
-  "version": "1.1.0",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.0/VideoPromptAssistant-Setup-1.1.0.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.0/VideoPromptAssistant-Setup-1.1.0.exe",
-  "notes": "V1.1.0 更新说明\r\n\r\n· 修复\r\n  - 修复部分电脑因系统用户名或临时目录含中文，导致「AI 克隆配音」启动引擎失败、无法生成语音的问题",
+  "version": "1.1.1",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.1/VideoPromptAssistant-Setup-1.1.1.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.1/VideoPromptAssistant-Setup-1.1.1.exe",
+  "notes": "V1.1.1 更新说明\n\n· 修复\n  - 修复灵感收集里双击照片看大图、上下翻页时只能看到两张、翻不到其它照片的问题\n  - 修复粘贴新照片后一直停在「识别中」，提示词始终反推不出来的问题\n  - 修复打开照片详情再关闭后，灵感收集面板会自己刷新一次、界面跟着跳动的问题\n\n· 优化\n  - 灵感收集的图片会按面板宽度自动铺满，不再只显示一小排、右侧留一大片空白\n  - 识别不出结果时会直接提示失败，不再一直停在「识别中」\n\n· 新增\n  - 灵感收集工具栏新增「自动识别反推提示词」开关，默认开启；关闭后粘贴图片只入库不识别，可省下用量\n  - 照片详情里「润色」旁边新增「识别」按钮，点一下开始反推、再点一下停止，可单独控制这一张",
   "mandatory": false,
-  "sha256": "6710F2410F89B346A514888385BF7ADC2AD1F933A6E69E1CFEA9E0BB98902F52",
-  "size": 35219313,
+  "sha256": "098CA842B62218BC746BB3E268A9B33A81071BBFDD03F2F78D6DE0D46B3A27F7",
+  "size": 35249035,
   "min_supported": "1.0.1"
 }
