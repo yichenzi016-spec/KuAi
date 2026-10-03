@@ -1,10 +1,10 @@
 {
-  "version": "1.0.10",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.0.10/VideoPromptAssistant-Setup-1.0.10.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.0.10/VideoPromptAssistant-Setup-1.0.10.exe",
-  "notes": "V1.0.10 更新说明\r\n\r\n· 修复\r\n  - 修复翻译时把要翻译的内容当成指令执行的问题，现在只输出译文，不再多出解释或乱执行\r\n\r\n· 优化\r\n  - 左侧「工作区」改名为「提示词管理」，名称更贴合实际用途",
+  "version": "1.1.0",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.0/VideoPromptAssistant-Setup-1.1.0.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.0/VideoPromptAssistant-Setup-1.1.0.exe",
+  "notes": "V1.1.0 更新说明\r\n\r\n· 修复\r\n  - 修复部分电脑因系统用户名或临时目录含中文，导致「AI 克隆配音」启动引擎失败、无法生成语音的问题",
   "mandatory": false,
-  "sha256": "816BE3233086A2E100F7ED43266FBB0A49C1B7B0DDE4D85F63808A15909BF2B1",
-  "size": 35210346,
+  "sha256": "6710F2410F89B346A514888385BF7ADC2AD1F933A6E69E1CFEA9E0BB98902F52",
+  "size": 35219313,
   "min_supported": "1.0.1"
 }
