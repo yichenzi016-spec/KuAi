@@ -345,6 +345,7 @@ def _gitee_req(method: str, path: str, token: str,
     cmd = [_CURL, "-sS", "-X", method,
            "--max-time", str(timeout),
            "-H", "Accept: application/json",
+           "-H", "Expect:",  # 关掉 100-continue：大文件经代理上传时，代理返回 100 会被 curl 误读为最终状态码（HTTP 100）
            "-w", marker + "%{http_code}"]
     body: bytes | None = None
     if raw_bytes is not None:
