@@ -2,7 +2,7 @@
   "version": "1.1.2",
   "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.2/VideoPromptAssistant-Setup-1.1.2.exe",
   "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.2/VideoPromptAssistant-Setup-1.1.2.exe",
-  "notes": "V1.1.2 更新说明\r\n\r\n· 修复\r\n  - 修复部分电脑上会自动多出一个 Z 盘、空间和 D 盘显示得一模一样的问题，重启后该盘符会自动消失\r\n  - 修复老用户升级后数据文件夹仍是中文名称、导致 AI 克隆配音在部分电脑上启动失败的问题，升级后自动改为英文名称并保留原有数据\r\n  - 修复安装到含中文的路径时可能出现问题的情况，安装时会有友好提示\r\n\r\n· 优化\r\n  - 长时间使用后不再堆积无用缓存，占用空间明显减少\r\n  - 界面配色统一管理，后续调整不会再出现部分区域颜色不一致",
+  "notes": "V1.1.2 更新说明\n\n· 修复\n  - 修复部分电脑上会自动多出一个 Z 盘、空间和 D 盘显示得一模一样的问题，重启后该盘符会自动消失\n  - 修复老用户升级后数据文件夹仍是中文名称、导致 AI 克隆配音在部分电脑上启动失败的问题，升级后自动改为英文名称并保留原有数据\n  - 修复安装到含中文的路径时可能出现问题的情况，安装时会有友好提示\n\n· 优化\n  - 长时间使用后不再堆积无用缓存，占用空间明显减少\n  - 界面配色统一管理，后续调整不会再出现部分区域颜色不一致",
   "mandatory": false,
   "sha256": "221C9F6EBB7C615C6CB37B818E1B0F0CF273D3B591EFEF892930B51D4DAFBCC8",
   "size": 35291049,
