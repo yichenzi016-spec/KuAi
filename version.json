@@ -1,10 +1,10 @@
 {
-  "version": "1.1.3",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.3/VideoPromptAssistant-Setup-1.1.3.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.3/VideoPromptAssistant-Setup-1.1.3.exe",
-  "notes": "V1.1.3 更新说明\n\n· 修复\n  - 修复灵感收集自动反推提示词时，中文提示词框里混入英文、英文提示词框里混入中文标签和分类的问题\n",
+  "version": "1.1.4",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.4/VideoPromptAssistant-Setup-1.1.4.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.4/VideoPromptAssistant-Setup-1.1.4.exe",
+  "notes": "V1.1.4 更新说明\n\n· 修复\n  - 修复若干已知问题\n\n· 优化\n  - 优化使用体验",
   "mandatory": false,
-  "sha256": "F32790958952E8C78CF04526627B58FF6B870C9F9C3333766E22678FD105CE67",
-  "size": 35291509,
+  "sha256": "E74E5EB8CF43BE7A63CD2CA9DAC6B2D72036C42A60FC0A3B0F8C1DA0B5EE9E87",
+  "size": 35295202,
   "min_supported": "1.0.1"
 }
