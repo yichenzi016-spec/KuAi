@@ -1,10 +1,10 @@
 {
-  "version": "1.1.4",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.4/VideoPromptAssistant-Setup-1.1.4.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.4/VideoPromptAssistant-Setup-1.1.4.exe",
-  "notes": "V1.1.4 更新说明\n\n· 修复\n  - 修复若干已知问题\n\n· 优化\n  - 优化使用体验",
+  "version": "1.1.5",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v1.1.5/VideoPromptAssistant-Setup-1.1.5.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v1.1.5/VideoPromptAssistant-Setup-1.1.5.exe",
+  "notes": "V1.1.5 更新说明\n\n· 修复\n  - 修复提示词里明明写了动作，却提示「缺少可执行动作」、白多花一次生成的问题\n  - 修复同一件道具在不同镜头被写成不同名称或材质（如前一镜「石缸」、后一镜「陶缸」）却没有任何提醒的问题\n  - 修复人物写了「落地」但前面并没有起跳或被击飞的动作、提示词却没被指出的问题\n  - 修复两人一同出场时被误判成「只写了一个人」、触发多余重新生成的问题\n  - 修复打开软件后主界面偶尔卡住不动的问题\n\n· 优化\n  - 提示词里选择的时长会真正生效，不再被默认值覆盖\n  - 生成结果可以直接修改，切换模型或复制时保留你改过的内容\n  - 生成过程中再调整参数，不会再串到正在进行的那一条\n  - 图片类模型不再带上视频专用的参数设置\n  - 分镜按时间段拆分时每段镜头数更均匀\n  - 单张图片的提示词不再混入镜头运动描述\n  - 可灵提示词超出长度上限时，会说明原因并给出处理办法",
   "mandatory": false,
-  "sha256": "E74E5EB8CF43BE7A63CD2CA9DAC6B2D72036C42A60FC0A3B0F8C1DA0B5EE9E87",
-  "size": 35295202,
+  "sha256": "003F3496C0705F3AAAAAC1322E7557A4F7C4F835096444E3B9C7251D5CFECDE5",
+  "size": 35837681,
   "min_supported": "1.0.1"
 }
