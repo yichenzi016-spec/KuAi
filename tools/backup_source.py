@@ -100,7 +100,8 @@ def main() -> int:
     args = ap.parse_args()
 
     src = Path(args.src)
-    if not (src / ".git").is_dir():
+    # linked worktree 的 .git 是指向主仓库的文件，不是目录；两种都算有效 git 工作树。
+    if not (src / ".git").exists():
         print(f"❌ {src} 不是 git 仓库（缺少 .git）")
         return 1
 
