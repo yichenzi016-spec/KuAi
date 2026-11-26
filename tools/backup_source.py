@@ -11,10 +11,10 @@
 GitHub 也可作为目标，通过 --platform github 切换。
 
 【它做了什么】
-    1) 进入源码目录 E:/AI/AI提示词工具最新软件架构（该目录已是 git 仓库）
+    1) 进入 2.0 主线 worktree E:/KuAi_UI_Migration/qoder-qt-completion（linked git worktree）
     2) git add -A 收集全部源码改动
     3) 有改动时 git commit（提交信息带日期），无改动则跳过
-    4) git push 到私有备份仓库（默认 main:main，与本地分支同名，不做分支映射）
+    4) git push 到私有备份仓库（默认 ui-migration/qoder-qt-completion:main，2.0 主线 → 远端 main）
 
 【前置条件（一次性）】
 Gitee 路线（默认）：
@@ -33,7 +33,7 @@ GitHub 路线（--platform github）：
     python backup_source.py            # Gitee 默认，推送
     python backup_source.py --no-push  # 只本地提交不推送
     python backup_source.py --platform github --repo yichenzi016-spec/KuAi-source-backup
-    python backup_source.py --src D:/codes/myapp --platform gitee --branch main:main
+    python backup_source.py --src D:/codes/myapp --platform gitee --branch ui-migration/qoder-qt-completion:main
 """
 from __future__ import annotations
 
@@ -46,10 +46,10 @@ from pathlib import Path
 # ----------------------------------------------------------------------------
 # 默认配置（Gitee 路线）
 # ----------------------------------------------------------------------------
-DEFAULT_SRC = Path(r"E:/AI/AI提示词工具最新软件架构")
+DEFAULT_SRC = Path(r"E:/KuAi_UI_Migration/qoder-qt-completion")  # 2.0 唯一代码真源（linked worktree）
 DEFAULT_PLATFORM = "gitee"
 DEFAULT_REPO = "kuai061102/ku-ai"                   # 私有备份仓库（Gitee 显示 KUAI061102，但 URL 必须小写）
-DEFAULT_BRANCH = "main:main"                       # 本地 main → 远端 main（不映射，避免主备分支分叉）
+DEFAULT_BRANCH = "ui-migration/qoder-qt-completion:main"  # 2.0 worktree → 私有备份仓 main
 
 # 各平台 token 读取路径（按优先级；缺一个自动跳过）
 PLATFORM_TOKEN_FILES = {
@@ -94,7 +94,7 @@ def main() -> int:
                     help="目标平台（默认 gitee）")
     ap.add_argument("--repo", default=DEFAULT_REPO, help="仓库 owner/name")
     ap.add_argument("--branch", default=DEFAULT_BRANCH,
-                    help="本地→远端 分支映射，默认 main:main")
+                    help="本地→远端 分支映射，默认 ui-migration/qoder-qt-completion:main")
     ap.add_argument("--token-file", default="", help="自定义 token 文件路径（可选）")
     ap.add_argument("--no-push", action="store_true", help="只提交不推送")
     args = ap.parse_args()
@@ -135,7 +135,7 @@ def main() -> int:
     print(f"源目录: {src}")
     print(f"目标: https://{PLATFORM_HOST[args.platform]}/{args.repo}  ({local_branch} → {remote_branch})")
 
-    # 0) 校验本地分支存在（默认 main:main，不做分支映射，避免主备分支分叉）
+    # 0) 校验本地分支存在（默认 2.0 主线 worktree → 私有备份仓 main）
     code, out = run(["git", "rev-parse", "--verify", local_branch], src)
     if code != 0:
         print(f"❌ 本地分支 {local_branch} 不存在")
