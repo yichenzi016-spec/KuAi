@@ -1,10 +1,10 @@
 {
-  "version": "2.0.1",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v2.0.1/VideoPromptAssistant-Setup-2.0.1.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v2.0.1/VideoPromptAssistant-Setup-2.0.1.exe",
-  "notes": "V2.0.1 更新说明\r\n\r\n· 修复\r\n  - 修复一键立项时项目名称要填两遍、生成后不自动打开文件夹的问题\r\n  - 修复工作区选择路径后显示和实际保存不一致的问题\r\n  - 修复语音克隆必须填写参考文字才能生成的问题\r\n  - 修复语音识别过程中切换音色后，旧结果覆盖新选择的问题\r\n\r\n· 优化\r\n  - 语音克隆的自动识别开关移到更顺手的位置，识别过程可以随时停止\r\n  - 识别较慢时会给出提示，不再让人误以为卡住",
+  "version": "2.0.2",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v2.0.2/VideoPromptAssistant-Setup-2.0.2.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v2.0.2/VideoPromptAssistant-Setup-2.0.2.exe",
+  "notes": "V2.0.2 更新说明\r\n\r\n· 修复\r\n  - 修复检查更新发现新版本后只提示、无法下载安装的问题\r\n  - 新版本现在会弹出确认窗口，确认后自动下载并安装，数据自动保留",
   "mandatory": false,
-  "sha256": "041F4F44617C8B8D179E85079EBAF35EC27621BB24AD977B99C3C5A87EDBD2C2",
-  "size": 70118310,
+  "sha256": "20C04F5CC74C7947446692A0A47162484259BECA2CC81CC24CB0569F2FA7850F",
+  "size": 70111953,
   "min_supported": "1.0.1"
 }
