@@ -1,10 +1,10 @@
 {
-  "version": "2.0.2",
-  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v2.0.2/VideoPromptAssistant-Setup-2.0.2.exe",
-  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v2.0.2/VideoPromptAssistant-Setup-2.0.2.exe",
-  "notes": "V2.0.2 更新说明\r\n\r\n· 修复\r\n  - 修复检查更新发现新版本后只提示、无法下载安装的问题\r\n  - 新版本现在会弹出确认窗口，确认后自动下载并安装，数据自动保留",
+  "version": "2.1.0",
+  "url": "https://gitee.com/kuai061102/kuai-release/releases/download/v2.1.0/VideoPromptAssistant-Setup-2.1.0.exe",
+  "url_mirror": "https://github.com/yichenzi016-spec/KuAi/releases/download/v2.1.0/VideoPromptAssistant-Setup-2.1.0.exe",
+  "notes": "V2.1.0 更新说明\r\n\r\n· 新增\r\n  - 新增「效率工具」面板，一键立项、旧稿归档等常用工具集中入口\r\n  - 新增快捷路径助手，自动显示当前文件夹位置，常用和最近路径一键跳转\r\n  - 新增系统托盘，可最小化到托盘，开机自动启动可在菜单里随时关闭\r\n\r\n· 优化\r\n  - 立项模板与提示词卡片分开管理，删模板不会误删提示词\r\n  - 提示词管理标题栏显示当前路径，卡片区域更大\r\n  - 侧栏菜单加入主题切换，折叠时只显示图标\r\n  - 启动时的界面样式报错已清理，常用路径可排序、可去重\r\n",
   "mandatory": false,
-  "sha256": "20C04F5CC74C7947446692A0A47162484259BECA2CC81CC24CB0569F2FA7850F",
-  "size": 70111953,
+  "sha256": "C992B978B5A7165BFCBF2542DE26002B1200492F9179832371783D5F84D5D36B",
+  "size": 70293600,
   "min_supported": "1.0.1"
 }
